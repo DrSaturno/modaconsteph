@@ -190,3 +190,21 @@ create table if not exists limites (
   en     timestamptz not null default now()
 );
 create index if not exists limites_idx on limites (clave, en);
+
+-- Seguridad: Supabase publica las tablas de `public` por su API (con la clave anónima). Acá no hace falta:
+-- la web entra directo a Postgres con el rol dueño de las tablas, que no pasa por RLS.
+-- Con RLS activada y sin políticas, y sacando los permisos a los roles de la API, esa puerta queda cerrada.
+-- (En un Postgres sin esos roles no cambia nada.) Se puede repetir sin riesgo.
+do $$
+declare t text;
+begin
+  for t in select tablename from pg_tables where schemaname = 'public' loop
+    execute format('alter table %I enable row level security', t);
+  end loop;
+  if exists (select 1 from pg_roles where rolname = 'anon') then
+    revoke all on all tables in schema public from anon;
+  end if;
+  if exists (select 1 from pg_roles where rolname = 'authenticated') then
+    revoke all on all tables in schema public from authenticated;
+  end if;
+end $$;

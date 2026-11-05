@@ -37,7 +37,9 @@ async function open(): Promise<Db> {
     const prueba = process.env.MCS_DB_PRUEBA === '1';
     const sql = postgres(url, prueba
       ? { max: 1, prepare: false, idle_timeout: 0.3, connect_timeout: 60 }
-      : { max: 5, prepare: false, idle_timeout: 20, connect_timeout: 15 });
+      // max_pipeline: 1 → una consulta por vez en cada conexión. El pooler de Supabase en modo transacción (Supavisor)
+      // no soporta que el driver encole varias consultas en la misma conexión: quedan colgadas hasta el timeout.
+      : { max: 5, prepare: false, max_pipeline: 1, idle_timeout: 20, connect_timeout: 15 });
     const run = (s: { unsafe: (t: string, p?: any[]) => PromiseLike<any> }): Query =>
       (async (text: string, params?: unknown[]) => Array.from(await s.unsafe(text, params as any[]))) as Query;
     // en la base de prueba, si justo se suelta la conexión se vuelve a intentar enseguida

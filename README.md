@@ -56,6 +56,11 @@ Para quien programe:
 
 - Los valores JSON se guardan con `$n::text::jsonb` (no `$n::jsonb`): el driver de PostgreSQL (`postgres`) y el de la base de
   prueba codifican distinto un texto con JSON, y con `::jsonb` el valor se guardaba dos veces codificado en producción.
+- Con Supabase, `DATABASE_URL` tiene que ser la del **pooler en modo transacción** (puerto 6543, `…pooler.supabase.com`): la conexión
+  directa es solo IPv6 y Vercel no la alcanza. La conexión usa `max_pipeline: 1` (`src/lib/db.ts`): el pooler no soporta que el driver
+  encole varias consultas en la misma conexión, y sin eso el build y las páginas se cuelgan hasta el timeout de la base.
+- El esquema activa RLS en todas las tablas y le quita permisos a los roles de la API de Supabase (`anon`, `authenticated`): los datos de
+  alumnas no quedan expuestos por esa API. La web entra con un usuario propio con `bypassrls` (no con el administrador de Supabase).
 - La base de prueba atiende de a un cliente (`MCS_DB_PRUEBA=1`, lo pone `npm run dev`): cada proceso la usa un instante y la suelta.
   No abrir `.data/pglite` desde otro programa mientras `npm run dev` está corriendo.
 
