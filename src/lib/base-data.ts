@@ -152,6 +152,17 @@ Qué quiere cambiar o descubrir: [motivo]
 Contacto: [email] · [tel]
 
 Verla en el panel: [panel]` },
+  { clave: 'steph_ultimo_lugar', nombre: 'Aviso a Steph: queda 1 lugar', cuando: 'Cuando una reserva deja una fecha con un solo lugar libre', destino: 'steph', activa: true,
+    asunto: 'Queda 1 lugar en [curso]',
+    cuerpo: `Queda 1 solo lugar en [curso] para el [fecha] ([hora]).
+
+Lugares libres: [libres] de [cupo]
+
+La última en reservar fue [nombre] ([email] · [tel]). Los lugares cuentan los ya pagos y los guardados mientras esperan el pago.
+
+Es un buen momento para avisar en historias o por WhatsApp que queda el último lugar.
+
+Verlo en el panel: [panel]` },
 ];
 
 export const AJUSTES: Record<string, unknown> = {

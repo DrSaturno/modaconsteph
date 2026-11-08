@@ -64,7 +64,7 @@ export async function crearReserva(entrada: unknown, ip: string): Promise<Result
   if (curso.kind === 'regalo' && !d.regalo) return { ok: false, error: 'Escribí para quién es el regalo.' };
 
   const codigo = generarCodigo();
-  type Creada = { id: string; estado: string; monto: number; titulo: string } | { error: string };
+  type Creada = { id: string; estado: string; monto: number; titulo: string; ultimo: boolean } | { error: string };
   const r = await tx<Creada>(async (q) => {
     let fecha: Record<string, any> | null = null;
     if (curso.kind === 'fecha' || curso.kind === 'slot') {
@@ -81,6 +81,7 @@ export async function crearReserva(entrada: unknown, ip: string): Promise<Result
     const precios = precioEfectivo(curso as any, fecha as any, ahora);
     if (precios.precio == null) return { error: 'Este curso no tiene precio cargado todavía.' };
     let estado = 'pendiente';
+    let ultimo = false;
     if (fecha) {
       const tomados = (await q<{ n: number }>(
         `select count(*)::int as n from reservas where fecha_id = $1 and (estado = 'confirmada' or (estado = 'pendiente' and vence_en > now()))`, [fecha.id]))[0].n;
@@ -88,6 +89,7 @@ export async function crearReserva(entrada: unknown, ip: string): Promise<Result
       if (libres <= 0 && !d.espera) return { error: 'Se completaron los lugares mientras reservabas. Podés anotarte en la lista de espera.' };
       if (libres > 0 && d.espera) return { error: 'Se liberó un lugar: volvé a reservar normalmente.' };
       if (libres <= 0) estado = 'espera';
+      ultimo = estado === 'pendiente' && libres === 2; // con esta reserva queda un solo lugar
     }
     const sena = calcularSena(curso as any, precios.precio);
     const modo = d.modo === 'sena' && sena ? 'sena' : 'total';
@@ -102,18 +104,32 @@ export async function crearReserva(entrada: unknown, ip: string): Promise<Result
        precios.precio, aPagar, vence, d.regalo ? JSON.stringify(d.regalo) : null],
     );
     const titulo = fecha ? `${curso.corto} · ${fechaLarga(new Date(fecha.inicio).toISOString())}` : curso.nombre;
-    return { id: fila[0].id, estado, monto: aPagar, titulo };
+    return { id: fila[0].id, estado, monto: aPagar, titulo, ultimo };
   });
   if ('error' in r) return { ok: false, error: r.error };
 
   await suscribirSiquiere(d.email, d.novedades, 'reserva');
   if (r.estado === 'espera') return { ok: true, url: `/reserva/${codigo}` };
 
+  /** Si esta reserva dejó la fecha con un solo lugar libre, Steph lo sabe (aparte del aviso de la reserva). Nunca rompe la reserva. */
+  const avisarUltimoLugar = async () => {
+    if (!r.ultimo) return;
+    try {
+      await enviarAhora([await encolar(query, { plantilla: 'steph_ultimo_lugar', para: 'steph', reservaId: r.id })]);
+    } catch (e) {
+      console.error('No se pudo avisar que queda un solo lugar', e);
+    }
+  };
+
   if (d.metodo === 'mp') {
-    if (simulacroActivo()) return { ok: true, url: `/reserva/${codigo}/simulacro` };
+    if (simulacroActivo()) {
+      await avisarUltimoLugar();
+      return { ok: true, url: `/reserva/${codigo}/simulacro` };
+    }
     try {
       const pref = await crearPreferencia({ codigo, titulo: r.titulo, monto: r.monto, nombre: d.nombre, email: d.email, venceMin: a.mp_hold_min });
       await query(`update reservas set mp_preferencia = $2 where id = $1`, [r.id, pref.id]);
+      await avisarUltimoLugar();
       return { ok: true, url: pref.url };
     } catch (e) {
       console.error('No se pudo crear el pago en Mercado Pago', e);
@@ -127,6 +143,7 @@ export async function crearReserva(entrada: unknown, ip: string): Promise<Result
     await encolar(query, { plantilla: 'steph_reserva', para: 'steph', reservaId: r.id }),
   ];
   await enviarAhora(ids);
+  await avisarUltimoLugar();
   return { ok: true, url: `/reserva/${codigo}` };
 }
 

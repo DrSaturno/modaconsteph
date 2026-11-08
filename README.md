@@ -39,6 +39,8 @@ Reglas de negocio importantes:
 
 - El cupo se cuenta con reservas confirmadas + pendientes cuyo plazo no venció. Se controla dentro de una transacción
   con la fecha bloqueada, así dos personas no se llevan el mismo último lugar.
+- Cuando una reserva deja una fecha con un solo lugar libre, Steph recibe un mail aparte (plantilla `steph_ultimo_lugar`, editable y
+  apagable en el panel). Se manda al crear la reserva, con transferencia o con Mercado Pago, y no se repite al completarse la fecha.
 - Pago con Mercado Pago: el lugar se guarda `mp_hold_min` minutos. Transferencia: `hold_horas` horas (Ajustes).
 - Un pago se confirma consultándolo a Mercado Pago con el token de Steph (nunca por lo que diga el aviso) y verificando el monto.
 - Los mails programados salen a las 8:00 de Buenos Aires; la tarea `/api/cron/mails` corre todos los días a esa hora.
