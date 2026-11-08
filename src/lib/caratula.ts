@@ -1,6 +1,6 @@
 /*
  * Carátulas de los cursos: una pieza gráfica propia para cada curso, con la misma familia visual de la web
- * (ciruela, rosa, luz de camerino). Se arman con datos, sin subir imágenes: Steph elige ilustración y colores.
+ * (la paleta de la clienta y las luces de camerino). Se arman con datos, sin subir imágenes: Steph elige ilustración y colores.
  * Este archivo no depende del servidor: lo usan la web, el panel y la imagen para compartir.
  */
 
@@ -14,6 +14,21 @@ export const MOTIVOS = [
   { id: 'regalo', nombre: 'Regalo' },
 ] as const;
 export type Motivo = (typeof MOTIVOS)[number]['id'];
+
+/** Los tres colores de Moda con Steph (los mismos de src/app/paleta.css). No se usa ninguno más. */
+export const FONDO = '#f7f6f4';
+export const LETRA = '#231f20';
+export const TITULO = '#c67fa1';
+
+const canal = (hex: string, i: number) => parseInt(hex.slice(1 + i * 2, 3 + i * 2), 16);
+/** Mezcla de dos colores de la paleta: t = 0 es `a`, t = 1 es `b`. */
+export function mezcla(a: string, b: string, t: number): string {
+  return `#${[0, 1, 2].map((i) => Math.round(canal(a, i) * (1 - t) + canal(b, i) * t).toString(16).padStart(2, '0')).join('')}`;
+}
+export const conAlfa = (hex: string, alfa: number) => `rgba(${canal(hex, 0)},${canal(hex, 1)},${canal(hex, 2)},${alfa})`;
+
+const clara = (t: number) => mezcla(FONDO, TITULO, t); // del fondo al rosa
+const oscura = (t: number) => mezcla(TITULO, LETRA, t); // del rosa a las letras
 
 export type PaletaDef = {
   nombre: string;
@@ -30,33 +45,43 @@ export type PaletaDef = {
   centro: string;
   marco: string;
   vidrio: string;
+  /** Chispas y lucecitas de los lugares: se ven sobre el fondo. */
+  chispa: string;
+  /** Bombitas del espejo: se ven sobre el marco. */
+  bombita: string;
+  /** Detalles que resaltan sobre las prendas y los regalos (moño, tapa del labial). */
+  acento: string;
+  /** Reflejos del vidrio. */
+  reflejo: string;
 };
+
+const ROSA_PROFUNDO = mezcla(TITULO, LETRA, 0.4);
 
 export const PALETAS = {
   ciruela: {
-    nombre: 'Ciruela', fondo: '#241029', fondo2: '#4D2660', tinta: '#F7E9F0', tinta2: '#D9C3D2', linea: 'rgba(247,233,240,.24)',
-    rampa: ['#FFF0CC', '#F3D2E0', '#EBBFD4', '#D99BBA', '#C680A2', '#B25A89', '#9B3F6E'],
-    centro: '#FFD58A', marco: '#F7F0F3', vidrio: '#EAD2DE',
+    nombre: 'Noche', fondo: LETRA, fondo2: mezcla(LETRA, TITULO, 0.24), tinta: FONDO, tinta2: mezcla(LETRA, FONDO, 0.78), linea: conAlfa(FONDO, 0.24),
+    rampa: [FONDO, clara(0.25), clara(0.5), clara(0.75), TITULO, oscura(0.3), oscura(0.52)],
+    centro: FONDO, marco: FONDO, vidrio: clara(0.3), chispa: FONDO, bombita: TITULO, acento: FONDO, reflejo: FONDO,
   },
   berry: {
-    nombre: 'Frutilla', fondo: '#8E3764', fondo2: '#B8588D', tinta: '#FFF0CC', tinta2: '#FFE3EE', linea: 'rgba(255,240,204,.34)',
-    rampa: ['#FFF0CC', '#FFD58A', '#F6C2D6', '#EBBFD4', '#D78FB2', '#6E2A5C', '#4A1B3E'],
-    centro: '#241029', marco: '#F7F0F3', vidrio: '#EBBFD4',
+    nombre: 'Rosa', fondo: TITULO, fondo2: mezcla(TITULO, FONDO, 0.3), tinta: LETRA, tinta2: LETRA, linea: conAlfa(LETRA, 0.28),
+    rampa: [FONDO, clara(0.16), clara(0.34), clara(0.52), oscura(0.5), oscura(0.72), LETRA],
+    centro: LETRA, marco: FONDO, vidrio: clara(0.22), chispa: FONDO, bombita: TITULO, acento: LETRA, reflejo: FONDO,
   },
   rosa: {
-    nombre: 'Rosa', fondo: '#EBBFD4', fondo2: '#FADDE9', tinta: '#241029', tinta2: '#5C2A4C', linea: 'rgba(36,16,41,.22)',
-    rampa: ['#FBEFF4', '#F5DEE8', '#D99BBA', '#C680A2', '#9B3F6E', '#6E2A5C', '#241029'],
-    centro: '#241029', marco: '#241029', vidrio: '#FBEFF4',
+    nombre: 'Claro', fondo: FONDO, fondo2: clara(0.22), tinta: LETRA, tinta2: mezcla(LETRA, FONDO, 0.25), linea: conAlfa(LETRA, 0.2),
+    rampa: [clara(0.3), clara(0.5), clara(0.75), TITULO, oscura(0.35), oscura(0.6), LETRA],
+    centro: LETRA, marco: LETRA, vidrio: clara(0.2), chispa: TITULO, bombita: FONDO, acento: LETRA, reflejo: FONDO,
   },
   luz: {
-    nombre: 'Luz', fondo: '#FFD58A', fondo2: '#FFEBC4', tinta: '#241029', tinta2: '#552846', linea: 'rgba(36,16,41,.22)',
-    rampa: ['#FFF0CC', '#F7C6D6', '#E39AB8', '#C680A2', '#9B3F6E', '#6E2A5C', '#241029'],
-    centro: '#241029', marco: '#241029', vidrio: '#FBEFF4',
+    nombre: 'Rosa suave', fondo: clara(0.45), fondo2: clara(0.18), tinta: LETRA, tinta2: mezcla(LETRA, FONDO, 0.12), linea: conAlfa(LETRA, 0.22),
+    rampa: [FONDO, clara(0.18), TITULO, oscura(0.25), oscura(0.45), oscura(0.65), LETRA],
+    centro: LETRA, marco: LETRA, vidrio: clara(0.1), chispa: FONDO, bombita: FONDO, acento: FONDO, reflejo: FONDO,
   },
   durazno: {
-    nombre: 'Durazno', fondo: '#F2BFA8', fondo2: '#FBDCCB', tinta: '#241029', tinta2: '#552846', linea: 'rgba(36,16,41,.22)',
-    rampa: ['#FFF0CC', '#F7B7A3', '#E58F8F', '#C680A2', '#9B3F6E', '#6E2A5C', '#241029'],
-    centro: '#241029', marco: '#241029', vidrio: '#FBEFF4',
+    nombre: 'Rosa profundo', fondo: ROSA_PROFUNDO, fondo2: mezcla(ROSA_PROFUNDO, TITULO, 0.45), tinta: FONDO, tinta2: FONDO, linea: conAlfa(FONDO, 0.3),
+    rampa: [FONDO, clara(0.25), clara(0.5), clara(0.75), TITULO, oscura(0.7), LETRA],
+    centro: FONDO, marco: FONDO, vidrio: clara(0.3), chispa: FONDO, bombita: TITULO, acento: FONDO, reflejo: FONDO,
   },
 } as const satisfies Record<string, PaletaDef>;
 export type Paleta = keyof typeof PALETAS;
@@ -136,10 +161,10 @@ export function huellaCaratula(c: CaratulaProps): string {
 }
 
 /** Tamaño del título (en % del ancho de la carátula): el más grande que entra en tres renglones sin partir palabras. */
-export function tamanoTitulo(titulo: string, ancho = 56): number {
+export function tamanoTitulo(titulo: string, ancho = 48): number {
   const palabras = titulo.trim().split(/\s+/).filter(Boolean);
-  for (let fs = 12.4; fs > 6.2; fs -= 0.4) {
-    const cap = ancho / (fs * 0.5);
+  for (let fs = 11.6; fs > 5.2; fs -= 0.4) {
+    const cap = ancho / (fs * 0.62); // Poppins Bold: cada letra mide cerca de 0,62 veces el cuerpo
     let lineas = 1, actual = 0, cabe = true;
     for (const p of palabras) {
       if (p.length > cap) { cabe = false; break; }
@@ -148,5 +173,5 @@ export function tamanoTitulo(titulo: string, ancho = 56): number {
     }
     if (cabe && lineas <= 3) return Math.round(fs * 10) / 10;
   }
-  return 6.2;
+  return 5.2;
 }

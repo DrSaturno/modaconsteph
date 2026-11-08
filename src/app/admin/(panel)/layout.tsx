@@ -1,4 +1,5 @@
 import { Suspense, type ReactNode } from 'react';
+import Image from 'next/image';
 import { requerirAdmin } from '@/lib/auth';
 import { query } from '@/lib/db';
 import { salir } from '../actions';
@@ -27,7 +28,7 @@ async function Marco({ children }: { children: ReactNode }) {
   return (
     <div className="adm-app">
       <aside className="adm-side">
-        <div className="adm-brand">Moda con Steph<small>Panel</small></div>
+        <div className="adm-brand"><Image src="/img/logo-claro.png" alt="Moda con Steph" width={84} height={60} style={{ height: 60, width: 'auto' }} /><small>Panel</small></div>
         <NavPanel items={items} />
         <div className="adm-side-foot">
           <span>{a.nombre || a.email}{a.rol === 'asistente' ? ' · solo ver' : ''}</span>

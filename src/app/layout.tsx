@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { Bricolage_Grotesque, Poppins } from 'next/font/google';
+import { Poppins } from 'next/font/google';
+import './paleta.css';
 
-const titulos = Bricolage_Grotesque({ subsets: ['latin'], axes: ['opsz', 'wdth'], variable: '--font-head', display: 'swap' });
-const cuerpo = Poppins({ subsets: ['latin'], weight: ['400', '500', '600'], variable: '--font-body', display: 'swap' });
+const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-body', display: 'swap' });
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.SITE_URL || 'http://localhost:3000'),
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang="es-AR" className={`${titulos.variable} ${cuerpo.variable}`}>
+    <html lang="es-AR" className={poppins.variable}>
       <body>{children}</body>
     </html>
   );

@@ -1,0 +1,26 @@
+/*
+ * Paleta de Moda con Steph, la que pidió la clienta: estos tres colores y ninguno más.
+ *   fondo    #f7f6f4
+ *   letras   #231f20
+ *   títulos  #c67fa1
+ * Todo lo demás (líneas, tintes, textos secundarios, sombras) es una mezcla de esos tres.
+ * La misma paleta vive en src/lib/caratula.ts, para las carátulas y la imagen que se comparte.
+ */
+:root{
+  --fondo:#f7f6f4; --letra:#231f20; --titulo:#c67fa1;
+  /* sobre fondo claro */
+  --suave:color-mix(in srgb,var(--letra) 68%,var(--fondo));            /* texto secundario */
+  --linea:color-mix(in srgb,var(--titulo) 32%,var(--fondo));
+  --linea-fuerte:color-mix(in srgb,var(--titulo) 60%,var(--fondo));
+  --tinte-0:color-mix(in srgb,var(--titulo) 6%,var(--fondo));          /* franjas de sección */
+  --tinte:color-mix(in srgb,var(--titulo) 13%,var(--fondo));
+  --tinte-2:color-mix(in srgb,var(--titulo) 26%,var(--fondo));
+  --sombra:color-mix(in srgb,var(--letra) 18%,transparent);
+  --brillo:color-mix(in srgb,var(--titulo) 55%,transparent);           /* resplandor de las lucecitas */
+  /* sobre fondo oscuro (el color de las letras) */
+  --sobre-oscuro:color-mix(in srgb,var(--fondo) 78%,var(--letra));
+  --oscuro-2:color-mix(in srgb,var(--fondo) 9%,var(--letra));
+  --oscuro-linea:color-mix(in srgb,var(--fondo) 22%,var(--letra));
+  /* los títulos van en Poppins, igual que el texto */
+  --font-head:var(--font-body);
+}

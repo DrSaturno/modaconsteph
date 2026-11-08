@@ -85,7 +85,7 @@ async function Estado({ params }: { params: PageProps<'/reserva/[codigo]'>['para
 
       <p style={{ marginTop: 28, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
         {wa && <a className="btn dark" href={wa} target="_blank" rel="noopener">Escribirle a Steph</a>}
-        <Link className="btn" style={{ background: 'var(--paper)', boxShadow: 'inset 0 0 0 1.5px var(--plum)' }} href="/">Volver al inicio</Link>
+        <Link className="btn ghost" href="/">Volver al inicio</Link>
       </p>
     </>
   );

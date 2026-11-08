@@ -26,7 +26,7 @@ export function Cabecera() {
   return (
     <header className="top">
       <div className="wrap top-in">
-        <Link className="logo" href="/" aria-label="Moda con Steph, inicio"><Image src="/img/logo-claro.png" alt="Moda con Steph" width={79} height={56} style={{ height: 56, width: 'auto' }} priority /></Link>
+        <Link className="logo" href="/" aria-label="Moda con Steph, inicio"><Image src="/img/logo-rosa.png" alt="Moda con Steph" width={84} height={60} style={{ height: 60, width: 'auto' }} priority /></Link>
         <nav aria-label="Principal">{links.map(([h, t]) => <Link key={h} href={`/${h}`}>{t}</Link>)}</nav>
         <div className="top-r">
           <Link className="btn sm" href="/#fechas">Reservar</Link>
@@ -44,7 +44,7 @@ export function Pie({ aj }: { aj: AjustesPublicos }) {
       <div className="wrap">
         <div className="foot-in">
           <div>
-            <Image src="/img/logo-claro.png" alt="Moda con Steph" width={90} height={64} style={{ height: 64, width: 'auto' }} />
+            <Image src="/img/logo-claro.png" alt="Moda con Steph" width={101} height={72} style={{ height: 72, width: 'auto' }} />
             <p>Estudio de maquillaje e imagen personal.<br />Belgrano, CABA, a pasos de Av. Cabildo, con subte y colectivos.</p>
           </div>
           <div>
@@ -143,7 +143,7 @@ export function Agenda({ catalogo }: { catalogo: Curso[] }) {
   return (
     <section className="sec" id="fechas">
       <div className="wrap">
-        <p className="eyebrow" style={{ color: 'var(--berry)' }}>Agenda</p>
+        <p className="eyebrow">Agenda</p>
         <h2 style={{ marginTop: 10 }}>Próximas fechas</h2>
         <p className="sec-sub">Cada lugar es una luz: las que siguen encendidas están disponibles. Los lugares se actualizan solos con cada reserva.</p>
         <div className="sheet">
@@ -203,7 +203,7 @@ export function Cursos({ catalogo }: { catalogo: Curso[] }) {
   return (
     <section className="sec cursos" id="cursos">
       <div className="wrap">
-        <p className="eyebrow" style={{ color: 'var(--berry)' }}>Propuestas</p>
+        <p className="eyebrow">Propuestas</p>
         <h2 style={{ marginTop: 10 }}>Cursos y sesiones</h2>
         <p className="sec-sub">Para aprender en grupo o a tu medida, en el estudio o desde tu casa.</p>
         <FiltroCursos>{catalogo.filter((c) => c.kind !== 'regalo').map((c) => <TarjetaCurso key={c.id} c={c} />)}</FiltroCursos>
@@ -218,7 +218,7 @@ export function Pasos() {
   return (
     <section className="sec pasos" id="pasos">
       <div className="wrap">
-        <p className="eyebrow" style={{ color: 'var(--rose-soft)' }}>Reservar</p>
+        <p className="eyebrow">Reservar</p>
         <h2 style={{ marginTop: 10 }}>Tu lugar en tres pasos</h2>
         <ol className="steps">{PASOS.map((p) => <li key={p.t}><b>{p.t}</b><span>{p.d}</span></li>)}</ol>
       </div>
@@ -247,8 +247,8 @@ export function Resenas({ aj }: { aj: AjustesPublicos }) {
   return (
     <section className="sec resenas" id="resenas">
       <div className="wrap">
-        <p className="eyebrow" style={{ color: 'var(--rose-soft)' }}>Reseñas</p>
-        <h2 style={{ marginTop: 10, color: 'var(--on-dark)' }}>Lo que cuentan las alumnas</h2>
+        <p className="eyebrow">Reseñas</p>
+        <h2 style={{ marginTop: 10 }}>Lo que cuentan las alumnas</h2>
         <div className="rev">{RESENAS.map((r) => <figure key={r.autora}><blockquote>“{r.texto}”</blockquote><figcaption>{r.autora}</figcaption></figure>)}</div>
         {aj.linkResena && <p className="rev-more"><a href={aj.linkResena} target="_blank" rel="noopener">Ver las más de 110 reseñas en Google →</a></p>}
       </div>
@@ -284,7 +284,7 @@ export function Preguntas({ aj }: { aj: AjustesPublicos }) {
     <section className="sec faq" id="faq">
       <div className="wrap faq-in">
         <div>
-          <p className="eyebrow" style={{ color: 'var(--berry)' }}>Preguntas frecuentes</p>
+          <p className="eyebrow">Preguntas frecuentes</p>
           <h2 style={{ marginTop: 10 }}>Antes de reservar</h2>
           <div className="news"><h3>Tips de color y nuevas fechas</h3><p>Una vez por semana, en tu mail.</p>
             <Boletin origen="web" ok="Listo, ya estás en la lista." boton="Suscribirme" claro /></div>

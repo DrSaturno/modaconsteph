@@ -54,6 +54,9 @@ Carátulas de los cursos:
 
 Para quien programe:
 
+- Colores: solo los tres que pidió la clienta (fondo `#f7f6f4`, letras `#231f20`, títulos `#c67fa1`), definidos en `src/app/paleta.css`.
+  Todo lo demás (líneas, tintes, sombras) es una mezcla de esos tres con `color-mix`. Las carátulas de los cursos y la imagen para
+  compartir usan la misma paleta en `src/lib/caratula.ts`. Los títulos van en Poppins. El logo se usa sin modificar (originales en `brand/`).
 - Los valores JSON se guardan con `$n::text::jsonb` (no `$n::jsonb`): el driver de PostgreSQL (`postgres`) y el de la base de
   prueba codifican distinto un texto con JSON, y con `::jsonb` el valor se guardaba dos veces codificado en producción.
 - Con Supabase, `DATABASE_URL` tiene que ser la del **pooler en modo transacción** (puerto 6543, `…pooler.supabase.com`): la conexión

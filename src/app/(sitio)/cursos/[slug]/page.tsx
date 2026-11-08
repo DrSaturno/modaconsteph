@@ -63,7 +63,7 @@ export default async function FichaCurso({ params }: PageProps<'/cursos/[slug]'>
           <aside className="ficha-lado" aria-label="Reservar">
             <div className="lado-card">
               <h3>{c.kind === 'consulta' ? 'Empezá con una entrevista' : c.kind === 'regalo' ? 'Regalá esta experiencia' : 'Reservá tu lugar'}</h3>
-              {c.precio && <p><span style={{ fontSize: 13, color: 'var(--ink-2)' }}>{c.precioLista && <s>{peso(c.precioLista)} </s>}</span><b style={{ fontFamily: 'var(--f-head)', fontSize: 30 }}>{peso(c.fechas[0]?.precio ?? c.precio)}</b></p>}
+              {c.precio && <p><span style={{ fontSize: 13, color: 'var(--suave)' }}>{c.precioLista && <s>{peso(c.precioLista)} </s>}</span><b style={{ fontFamily: 'var(--f-head)', fontSize: 30 }}>{peso(c.fechas[0]?.precio ?? c.precio)}</b></p>}
               {grupal || c.kind === 'slot' ? (
                 c.fechas.length ? (
                   <>
@@ -78,7 +78,7 @@ export default async function FichaCurso({ params }: PageProps<'/cursos/[slug]'>
                   </>
                 ) : (
                   <>
-                    <p style={{ color: 'var(--ink-2)', fontSize: 15 }}>Por ahora no hay fechas abiertas. Dejá tu mail y te avisamos apenas se abra la próxima.</p>
+                    <p style={{ color: 'var(--suave)', fontSize: 15 }}>Por ahora no hay fechas abiertas. Dejá tu mail y te avisamos apenas se abra la próxima.</p>
                     <Boletin origen="espera" ok="Listo, te avisamos cuando abra la próxima fecha." boton="Avisarme" />
                   </>
                 )
@@ -86,7 +86,7 @@ export default async function FichaCurso({ params }: PageProps<'/cursos/[slug]'>
                 <ReservarBtn slug={c.slug} className="btn dark">{c.kind === 'consulta' ? 'Pedir entrevista' : 'Regalar una experiencia'}</ReservarBtn>
               )}
             </div>
-            {aj.whatsapp && <a className="btn dark" style={{ background: 'transparent', color: 'var(--plum)', boxShadow: 'inset 0 0 0 1.5px var(--plum)' }} href={`https://wa.me/${aj.whatsapp}`} target="_blank" rel="noopener">¿Dudas? Escribime por WhatsApp</a>}
+            {aj.whatsapp && <a className="btn ghost" href={`https://wa.me/${aj.whatsapp}`} target="_blank" rel="noopener">¿Dudas? Escribime por WhatsApp</a>}
           </aside>
         </div>
       </section>

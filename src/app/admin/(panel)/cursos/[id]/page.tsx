@@ -51,7 +51,7 @@ async function Contenido({ params, searchParams }: PageProps<'/admin/cursos/[id]
           {fechas.map((f) => {
             const pasada = new Date(f.inicio).getTime() < ahora;
             return (
-              <details key={f.id} id={`fecha-${f.id}`} style={{ borderTop: '1px solid #F3E6EE', padding: '12px 0' }}>
+              <details key={f.id} id={`fecha-${f.id}`} style={{ borderTop: '1px solid var(--line)', padding: '12px 0' }}>
                 <summary style={{ cursor: 'pointer', display: 'flex', flexWrap: 'wrap', gap: '6px 14px', alignItems: 'center', minHeight: 40 }}>
                   <b>{etiquetaFecha({ inicio: new Date(f.inicio).toISOString(), otrasClases: f.otras_clases })}</b>
                   <span style={{ color: 'var(--muted)' }}>{f.hora}</span>
@@ -74,7 +74,7 @@ async function Contenido({ params, searchParams }: PageProps<'/admin/cursos/[id]
             );
           })}
           {puede && (
-            <details style={{ borderTop: '1px solid #F3E6EE', padding: '12px 0' }} open={fechas.length === 0}>
+            <details style={{ borderTop: '1px solid var(--line)', padding: '12px 0' }} open={fechas.length === 0}>
               <summary style={{ cursor: 'pointer', fontWeight: 600, minHeight: 40 }}>+ Agregar una fecha</summary>
               <div style={{ paddingTop: 14 }}><FormFecha cursoId={c.id} tipo={c.tipo} kind={c.kind} valores={{ ...FECHA_VACIA, cupo: c.kind === 'slot' ? 1 : (fechas[0]?.cupo ?? 4), hora: fechas[0]?.hora ?? '' }} /></div>
             </details>

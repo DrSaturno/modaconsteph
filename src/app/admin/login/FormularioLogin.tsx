@@ -1,6 +1,7 @@
 'use client';
 
 import { useActionState, useTransition } from 'react';
+import Image from 'next/image';
 import { entrar } from '../actions';
 
 export function FormularioLogin() {
@@ -8,6 +9,7 @@ export function FormularioLogin() {
   const [, empezar] = useTransition();
   return (
     <form onSubmit={(ev) => { ev.preventDefault(); const d = new FormData(ev.currentTarget); empezar(() => enviar(d)); }}>
+      <Image src="/img/logo-rosa.png" alt="Moda con Steph" width={98} height={70} style={{ height: 70, width: 'auto', marginBottom: 14 }} priority />
       <h1>Panel de Steph</h1>
       <p>Entrá con tu email y tu clave.</p>
       {estado.error && <p className="msg err" role="alert">{estado.error}</p>}

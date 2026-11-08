@@ -1,7 +1,7 @@
 /* Carátulas de los cursos. Todo se mide en % del ancho (cqw), así la misma pieza sirve chica en una tarjeta y grande en la ficha.
    Las reglas llevan ".cv " adelante a propósito: la web y el panel tienen estilos de párrafo propios que no deben pisarlas. */
 .cv{
-  --cv-fondo:#241029;--cv-fondo2:#4D2660;--cv-tinta:#F7E9F0;--cv-tinta2:#D9C3D2;--cv-linea:rgba(247,233,240,.24);
+  --cv-fondo:var(--letra);--cv-fondo2:color-mix(in srgb,var(--titulo) 24%,var(--letra));--cv-tinta:var(--fondo);--cv-tinta2:var(--sobre-oscuro);--cv-linea:color-mix(in srgb,var(--fondo) 24%,transparent);--cv-luz:var(--fondo);
   position:relative;isolation:isolate;overflow:hidden;container-type:inline-size;aspect-ratio:4/3;
   background:radial-gradient(130% 95% at 84% 6%,var(--cv-fondo2) 0%,transparent 66%),var(--cv-fondo);color:var(--cv-tinta);
   -webkit-user-select:none;user-select:none;
@@ -10,10 +10,10 @@
 .cv .cv-marco{position:absolute;inset:3cqw;border-radius:4.4cqw;box-shadow:inset 0 0 0 1px var(--cv-linea);pointer-events:none}
 .cv p{margin:0}
 .cv .cv-k{position:absolute;left:7.2cqw;top:6.6cqw;display:flex;align-items:center;gap:1.8cqw;font:600 max(9px,2.6cqw)/1 var(--font-body),system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--cv-tinta2)}
-.cv .cv-foco,.cv .cv-luz{display:block;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#FFF0CC 55%,#EFCB86);box-shadow:0 0 1.5cqw .5cqw rgba(255,213,138,.75)}
+.cv .cv-foco,.cv .cv-luz{display:block;border-radius:50%;background:var(--cv-luz);box-shadow:0 0 1.5cqw .5cqw color-mix(in srgb,var(--cv-luz) 70%,transparent)}
 .cv .cv-foco{width:2.5cqw;height:2.5cqw}
-.cv .cv-txt{position:absolute;left:7.2cqw;bottom:7cqw;width:56cqw;display:grid;gap:2.6cqw}
-.cv .cv-t{font-family:var(--font-head),'Poppins',system-ui,sans-serif;font-weight:800;font-stretch:84%;line-height:.96;letter-spacing:-.025em;text-wrap:balance;color:var(--cv-tinta)}
+.cv .cv-txt{position:absolute;left:7.2cqw;bottom:7cqw;width:48cqw;display:grid;gap:2.6cqw}
+.cv .cv-t{font-family:var(--font-body),system-ui,sans-serif;font-weight:700;line-height:1.04;letter-spacing:-.02em;text-wrap:balance;color:var(--cv-tinta)}
 .cv .cv-d{display:flex;flex-wrap:wrap;align-items:center;gap:1cqw 2.2cqw;font:500 max(10.5px,3cqw)/1.25 var(--font-body),system-ui,sans-serif;color:var(--cv-tinta2)}
 .cv .cv-luces{display:inline-flex;gap:1.3cqw}
 .cv .cv-luz{width:3cqw;height:3cqw}

@@ -30,7 +30,7 @@ export function Boletin({ origen, ok, boton, claro = false }: { origen: 'web' | 
       {/* campo oculto: si alguien lo completa, es un robot */}
       <input type="text" name="web" value={trampa} onChange={(e) => setTrampa(e.target.value)} tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: 'absolute', left: -9999, width: 1, height: 1, opacity: 0 }} />
       <button className={claro ? 'btn' : 'btn dark'} type="submit" disabled={pendiente}>{pendiente ? 'Un segundo…' : boton}</button>
-      {msg && <p role="alert" style={{ flexBasis: '100%', margin: 0, fontSize: 14, fontWeight: 600, color: claro ? 'var(--bulb)' : 'var(--berry)' }}>{msg}</p>}
+      {msg && <p role="alert" style={{ flexBasis: '100%', margin: 0, fontSize: 14, fontWeight: 600, color: claro ? 'var(--titulo)' : 'var(--letra)' }}>{msg}</p>}
     </form>
   );
 }

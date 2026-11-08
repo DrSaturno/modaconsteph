@@ -8,20 +8,17 @@ import type { Motivo, PaletaDef } from '@/lib/caratula';
 
 type P = { P: PaletaDef; uid: string };
 
-const BOMBITA = '#FFF0CC';
-const LUZ = '#FFD58A';
-
 function Chispa({ x, y, s = 9, c }: { x: number; y: number; s?: number; c: string }) {
   return <path d={`M${x} ${y - s}Q${x} ${y} ${x + s} ${y}Q${x} ${y} ${x} ${y + s}Q${x} ${y} ${x - s} ${y}Q${x} ${y} ${x} ${y - s}Z`} fill={c} />;
 }
 
-function Bombita({ x, y, r = 6.4 }: { x: number; y: number; r?: number }) {
+function Bombita({ x, y, r = 6.4, P }: { x: number; y: number; r?: number; P: PaletaDef }) {
   return (
     <g>
-      <circle cx={x} cy={y} r={r * 2} fill={LUZ} opacity={0.32} />
-      <circle cx={x} cy={y} r={r * 1.35} fill={LUZ} opacity={0.4} />
-      <circle cx={x} cy={y} r={r} fill={BOMBITA} />
-      <circle cx={x - r * 0.3} cy={y - r * 0.35} r={r * 0.38} fill="#fff" />
+      <circle cx={x} cy={y} r={r * 2} fill={P.bombita} opacity={0.32} />
+      <circle cx={x} cy={y} r={r * 1.35} fill={P.bombita} opacity={0.4} />
+      <circle cx={x} cy={y} r={r} fill={P.bombita} />
+      <circle cx={x - r * 0.3} cy={y - r * 0.35} r={r * 0.38} fill={P.reflejo} />
     </g>
   );
 }
@@ -64,8 +61,8 @@ function Abanico({ P }: P) {
       ))}
       <circle cx={px} cy={py} r={14} fill={P.tinta} />
       <circle cx={px} cy={py} r={5} fill={P.fondo} />
-      <Chispa x={236} y={52} s={11} c={BOMBITA} />
-      <Chispa x={372} y={30} s={7} c={BOMBITA} />
+      <Chispa x={236} y={52} s={11} c={P.chispa} />
+      <Chispa x={372} y={30} s={7} c={P.chispa} />
     </g>
   );
 }
@@ -88,7 +85,7 @@ function Mezcla({ P, uid }: P) {
       <g clipPath={`url(#${b})`}><circle cx={C.x} cy={C.y} r={r} fill={P.rampa[4]} /></g>
       <g clipPath={`url(#${c})`}><circle cx={A.x} cy={A.y} r={r} fill={P.rampa[0]} /></g>
       <g clipPath={`url(#${a})`}><g clipPath={`url(#${b})`}><circle cx={C.x} cy={C.y} r={r} fill={P.centro} /></g></g>
-      <Chispa x={252} y={40} s={10} c={BOMBITA} />
+      <Chispa x={252} y={40} s={10} c={P.chispa} />
     </g>
   );
 }
@@ -101,7 +98,7 @@ function Espejo({ P, uid }: P) {
     <g>
       <defs>
         <linearGradient id={`${uid}g`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#fff" stopOpacity="0.9" />
+          <stop offset="0" stopColor={P.reflejo} stopOpacity="0.9" />
           <stop offset="1" stopColor={P.vidrio} />
         </linearGradient>
         <clipPath id={`${uid}v`}><rect x={gx} y={gy} width={gw} height={gh} rx={12} /></clipPath>
@@ -110,11 +107,11 @@ function Espejo({ P, uid }: P) {
       <rect x={gx} y={gy} width={gw} height={gh} rx={12} fill={P.vidrio} />
       <rect x={gx} y={gy} width={gw} height={gh} rx={12} fill={`url(#${uid}g)`} opacity={0.75} />
       <g clipPath={`url(#${uid}v)`}>
-        <path d={`M${gx - 4} ${gy + 74}L${gx + 70} ${gy - 4}H${gx + 104}L${gx - 4} ${gy + 128}Z`} fill="#fff" opacity={0.55} />
-        <path d={`M${gx + gw - 18} ${gy + gh + 4}L${gx + gw + 4} ${gy + gh - 40}V${gy + gh + 4}Z`} fill="#fff" opacity={0.45} />
+        <path d={`M${gx - 4} ${gy + 74}L${gx + 70} ${gy - 4}H${gx + 104}L${gx - 4} ${gy + 128}Z`} fill={P.reflejo} opacity={0.55} />
+        <path d={`M${gx + gw - 18} ${gy + gh + 4}L${gx + gw + 4} ${gy + gh - 40}V${gy + gh + 4}Z`} fill={P.reflejo} opacity={0.45} />
       </g>
-      <Chispa x={gx + gw - 30} y={gy + 38} s={13} c="#fff" />
-      {bombitas.map(([bx, by], i) => <Bombita key={i} x={bx} y={by} r={6} />)}
+      <Chispa x={gx + gw - 30} y={gy + 38} s={13} c={P.reflejo} />
+      {bombitas.map(([bx, by], i) => <Bombita key={i} x={bx} y={by} r={6} P={P} />)}
     </g>
   );
 }
@@ -127,8 +124,8 @@ function Arcos({ P }: P) {
       {radios.map((r, i) => (
         <path key={r} d={`M${cx - r} ${base}V${cy}A${r} ${r} 0 0 1 ${cx + r} ${cy}V${base}Z`} fill={P.rampa[i + 1]} />
       ))}
-      <Chispa x={236} y={92} s={10} c={BOMBITA} />
-      <Chispa x={382} y={34} s={7} c={BOMBITA} />
+      <Chispa x={236} y={92} s={10} c={P.chispa} />
+      <Chispa x={382} y={34} s={7} c={P.chispa} />
     </g>
   );
 }
@@ -155,7 +152,7 @@ function Perchero({ P }: P) {
           <path d={`M${x - 9} ${y0 + 42}L${x} ${y0 + 58}L${x + 9} ${y0 + 42}Z`} fill={P.fondo} opacity={0.85} />
         </g>
       ))}
-      <Chispa x={220} y={150} s={9} c={BOMBITA} />
+      <Chispa x={220} y={150} s={9} c={P.chispa} />
     </g>
   );
 }
@@ -168,13 +165,13 @@ function Labial({ P }: P) {
       <path d="M244 168Q280 148 314 160" stroke={P.rampa[1]} strokeWidth={22} strokeLinecap="round" fill="none" />
       <g transform="translate(-22 0) rotate(14 336 170)">
         <rect x={306} y={122} width={62} height={146} rx={10} fill={P.marco} />
-        <rect x={306} y={104} width={62} height={22} rx={5} fill={LUZ} />
+        <rect x={306} y={104} width={62} height={22} rx={5} fill={P.acento} />
         <path d="M312 104V60Q312 44 328 38L364 22V104Z" fill={P.rampa[4]} />
-        <path d="M316 104V62Q316 52 326 48" stroke="#fff" strokeOpacity={0.45} strokeWidth={4} strokeLinecap="round" fill="none" />
-        <rect x={316} y={138} width={8} height={110} rx={4} fill="#fff" opacity={0.28} />
+        <path d="M316 104V62Q316 52 326 48" stroke={P.reflejo} strokeOpacity={0.45} strokeWidth={4} strokeLinecap="round" fill="none" />
+        <rect x={316} y={138} width={8} height={110} rx={4} fill={P.reflejo} opacity={0.28} />
       </g>
-      <Chispa x={248} y={52} s={10} c={BOMBITA} />
-      <Chispa x={392} y={206} s={7} c={BOMBITA} />
+      <Chispa x={248} y={52} s={10} c={P.chispa} />
+      <Chispa x={392} y={206} s={7} c={P.chispa} />
     </g>
   );
 }
@@ -184,14 +181,14 @@ function Regalo({ P }: P) {
     <g>
       <rect x={262} y={124} width={124} height={110} rx={12} fill={P.rampa[3]} />
       <rect x={252} y={96} width={144} height={38} rx={10} fill={P.rampa[2]} />
-      <rect x={313} y={96} width={22} height={138} fill={LUZ} />
-      <rect x={313} y={96} width={22} height={38} fill={LUZ} />
-      <g transform="rotate(-28 324 88)"><ellipse cx={294} cy={86} rx={30} ry={15} fill={LUZ} /></g>
-      <g transform="rotate(28 324 88)"><ellipse cx={354} cy={86} rx={30} ry={15} fill={LUZ} /></g>
+      <rect x={313} y={96} width={22} height={138} fill={P.acento} />
+      <rect x={313} y={96} width={22} height={38} fill={P.acento} />
+      <g transform="rotate(-28 324 88)"><ellipse cx={294} cy={86} rx={30} ry={15} fill={P.acento} /></g>
+      <g transform="rotate(28 324 88)"><ellipse cx={354} cy={86} rx={30} ry={15} fill={P.acento} /></g>
       <circle cx={324} cy={92} r={11} fill={P.rampa[4]} />
-      <Chispa x={236} y={70} s={11} c={BOMBITA} />
-      <Chispa x={390} y={40} s={8} c={BOMBITA} />
-      <Chispa x={266} y={30} s={6} c={BOMBITA} />
+      <Chispa x={236} y={70} s={11} c={P.chispa} />
+      <Chispa x={390} y={40} s={8} c={P.chispa} />
+      <Chispa x={266} y={30} s={6} c={P.chispa} />
     </g>
   );
 }

@@ -7,7 +7,7 @@ import './caratula.css';
 export function coloresCaratula(paleta: Paleta): CSSProperties {
   const p = PALETAS[paleta] ?? PALETAS.ciruela;
   return {
-    '--cv-fondo': p.fondo, '--cv-fondo2': p.fondo2, '--cv-tinta': p.tinta, '--cv-tinta2': p.tinta2, '--cv-linea': p.linea,
+    '--cv-fondo': p.fondo, '--cv-fondo2': p.fondo2, '--cv-tinta': p.tinta, '--cv-tinta2': p.tinta2, '--cv-linea': p.linea, '--cv-luz': p.chispa,
   } as CSSProperties;
 }
 
