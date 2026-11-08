@@ -26,7 +26,7 @@ export function Cabecera() {
   return (
     <header className="top">
       <div className="wrap top-in">
-        <Link className="logo" href="/" aria-label="Moda con Steph, inicio"><Image src="/img/logo.png" alt="Moda con Steph" width={132} height={44} style={{ height: 44, width: 'auto' }} priority /></Link>
+        <Link className="logo" href="/" aria-label="Moda con Steph, inicio"><Image src="/img/logo-claro.png" alt="Moda con Steph" width={79} height={56} style={{ height: 56, width: 'auto' }} priority /></Link>
         <nav aria-label="Principal">{links.map(([h, t]) => <Link key={h} href={`/${h}`}>{t}</Link>)}</nav>
         <div className="top-r">
           <Link className="btn sm" href="/#fechas">Reservar</Link>
@@ -44,7 +44,7 @@ export function Pie({ aj }: { aj: AjustesPublicos }) {
       <div className="wrap">
         <div className="foot-in">
           <div>
-            <Image src="/img/logo.png" alt="Moda con Steph" width={138} height={46} style={{ height: 46, width: 'auto' }} />
+            <Image src="/img/logo-claro.png" alt="Moda con Steph" width={90} height={64} style={{ height: 64, width: 'auto' }} />
             <p>Estudio de maquillaje e imagen personal.<br />Belgrano, CABA, a pasos de Av. Cabildo, con subte y colectivos.</p>
           </div>
           <div>

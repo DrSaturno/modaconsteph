@@ -111,9 +111,10 @@ export async function enviarMail(id: string): Promise<'enviado' | 'omitido' | 'e
     if (!para) return await omitir('no hay mail de destino');
     const vars = await armarVars({ reservaId: m.reserva_id, consultaId: m.consulta_id }, (m.vars ?? {}) as Record<string, string>);
     const texto = sustituir(p.cuerpo, vars);
+    const asunto = sustituir(p.asunto, vars);
     await enviarCorreo({
       de: { nombre: a.remitente_nombre, email: a.remitente_email || 'dev@localhost' },
-      para, asunto: sustituir(p.asunto, vars), texto, html: aHtml(texto),
+      para, asunto, texto, html: aHtml(texto, asunto),
       responderA: a.mail_steph || undefined,
     });
     await query(`update mails set estado = 'enviado', enviado_en = now(), error = null, reclamado_en = null where id = $1`, [id]);
