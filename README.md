@@ -34,6 +34,7 @@ Para empezar de cero: parar el servidor y borrar la carpeta `.data/`.
 | Mails programados (confirmación, 48 h, día de clase, reseña…) | `src/lib/mail/`, `src/app/api/cron/mails` |
 | Panel de Steph (6 pestañas + ajustes) | `src/app/admin/` |
 | Base de datos | `db/schema.sql`, `src/lib/db.ts`, `src/lib/base-data.ts` |
+| Seguimiento (Tag Manager, Analytics 4, Pixel de Meta, compras desde el servidor) | `src/lib/tracking/`, `tracking/LEEME.md` |
 
 Reglas de negocio importantes:
 
@@ -43,6 +44,9 @@ Reglas de negocio importantes:
   apagable en el panel). Se manda al crear la reserva, con transferencia o con Mercado Pago, y no se repite al completarse la fecha.
 - Pago con Mercado Pago: el lugar se guarda `mp_hold_min` minutos. Transferencia: `hold_horas` horas (Ajustes).
 - Un pago se confirma consultándolo a Mercado Pago con el token de Steph (nunca por lo que diga el aviso) y verificando el monto.
+- Seguimiento: la web avisa a Google Tag Manager (`GTM-KC6FGSH8`) cada paso del recorrido y las etiquetas mandan eso a Analytics 4 y al Pixel
+  de Meta. La compra se cuenta desde el servidor cuando el pago se confirma (Meta API de Conversiones y Analytics Measurement Protocol)
+  y cada reserva guarda de qué campaña llegó. Solo corre en la web publicada, nunca en el panel. Detalle y pasos en `tracking/LEEME.md`.
 - Los mails programados salen a las 8:00 de Buenos Aires; la tarea `/api/cron/mails` corre todos los días a esa hora.
 
 Carátulas de los cursos:

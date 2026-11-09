@@ -15,7 +15,7 @@ async function ipDelVisitante(): Promise<string> {
 }
 
 export async function reservar(entrada: unknown): Promise<ResultadoReserva> {
-  const r = await crearReserva(entrada, await ipDelVisitante());
+  const r = await crearReserva(entrada, await ipDelVisitante(), (await headers()).get('user-agent') ?? '');
   updateTag('catalogo');
   return r;
 }

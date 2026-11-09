@@ -1,0 +1,508 @@
+{
+  "exportFormatVersion": 2,
+  "exportTime": "2026-11-08 22:25:32",
+  "containerVersion": {
+    "path": "accounts/0000000000/containers/0000000000/versions/0",
+    "accountId": "0000000000",
+    "containerId": "0000000000",
+    "containerVersionId": "0",
+    "container": {
+      "path": "accounts/0000000000/containers/0000000000",
+      "accountId": "0000000000",
+      "containerId": "0000000000",
+      "name": "www.modaconsteph.com",
+      "publicId": "GTM-KC6FGSH8",
+      "usageContext": [
+        "WEB"
+      ],
+      "fingerprint": "1700000000000",
+      "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/0000000000/containers/0000000000/workspaces?apiLink=container"
+    },
+    "tag": [
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "tagId": "1",
+        "name": "GA4 - Google tag",
+        "type": "googtag",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "tagId",
+            "value": "{{Const - GA4 ID}}"
+          }
+        ],
+        "fingerprint": "1700000000001",
+        "firingTriggerId": [
+          "10"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        },
+        "notes": "Carga Google Analytics 4 y manda las vistas de página. Propiedad G-8FPSLDRG5B (la misma de la web anterior)."
+      },
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "tagId": "2",
+        "name": "GA4 - Eventos del embudo",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "true"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "getEcommerceDataFrom",
+            "value": "dataLayer"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "{{_event}}"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "{{Const - GA4 ID}}"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "lead_type"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - lead_type}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "curso"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - curso}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "payment_type"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - payment_type}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "reserva_id"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - reserva_id}}"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "fingerprint": "1700000000002",
+        "firingTriggerId": [
+          "11"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        },
+        "notes": "view_item, begin_checkout, add_payment_info, generate_lead y reserva_creada. La compra (purchase) la manda el servidor."
+      },
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "tagId": "3",
+        "name": "Meta Pixel - Base + PageView",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\n!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');\nfbq('init', '{{Const - Meta Pixel ID}}');\nfbq('track', 'PageView');\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "1700000000003",
+        "firingTriggerId": [
+          "10"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        },
+        "notes": "Pixel 421894017597792 (el mismo de la web anterior). Carga el Pixel y cuenta la primera página."
+      },
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "tagId": "4",
+        "name": "Meta Pixel - PageView (cambio de página)",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>if (window.fbq) { fbq('track', 'PageView'); }</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "1700000000004",
+        "firingTriggerId": [
+          "12"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        },
+        "notes": "La web no recarga al cambiar de página: este aviso cuenta cada página que mira la alumna después de la primera."
+      },
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "tagId": "5",
+        "name": "Meta Pixel - Eventos del embudo",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\n(function () {\n  if (typeof fbq !== 'function') { return; }\n  var evento = {{Event}};\n  var lead = {{DLV - lead_type}};\n  var ec = {{DLV - ecommerce}} || {};\n  var item = (ec.items && ec.items[0]) || {};\n  // evento de la web -> evento estándar de Meta (se cambia acá, sin tocar el código de la web)\n  var MAPA = {\n    view_item: 'ViewContent',\n    begin_checkout: 'InitiateCheckout',\n    add_payment_info: 'AddPaymentInfo',\n    reserva_creada: 'Schedule',\n    generate_lead: (lead === 'boletin' ? 'Subscribe' : 'Lead')\n  };\n  var nombre = MAPA[evento];\n  if (!nombre) { return; }\n  var datos = {};\n  if (ec.value != null) { datos.value = ec.value; datos.currency = ec.currency || 'ARS'; }\n  if (item.item_id) { datos.content_ids = [item.item_id]; datos.content_type = 'product'; datos.content_name = item.item_name; }\n  if (lead) { datos.content_category = lead; }\n  fbq('track', nombre, datos);\n})();\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "1700000000005",
+        "firingTriggerId": [
+          "11"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        },
+        "notes": "ViewContent, InitiateCheckout, AddPaymentInfo, Schedule, Lead y Subscribe. Purchase lo manda el servidor (API de Conversiones)."
+      }
+    ],
+    "trigger": [
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "triggerId": "10",
+        "name": "MCS - Todas las páginas",
+        "type": "PAGEVIEW",
+        "fingerprint": "1700000000010"
+      },
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "triggerId": "11",
+        "name": "MCS - Eventos del embudo",
+        "type": "CUSTOM_EVENT",
+        "fingerprint": "1700000000011",
+        "customEventFilter": [
+          {
+            "type": "MATCH_REGEX",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "^(view_item|begin_checkout|add_payment_info|generate_lead|reserva_creada)$"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "triggerId": "12",
+        "name": "MCS - Cambio de página (sin recargar)",
+        "type": "CUSTOM_EVENT",
+        "fingerprint": "1700000000012",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "mcs_route_change"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "variable": [
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "variableId": "20",
+        "name": "Const - GA4 ID",
+        "type": "c",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "value",
+            "value": "G-8FPSLDRG5B"
+          }
+        ],
+        "fingerprint": "1700000000020",
+        "formatValue": {}
+      },
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "variableId": "21",
+        "name": "Const - Meta Pixel ID",
+        "type": "c",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "value",
+            "value": "421894017597792"
+          }
+        ],
+        "fingerprint": "1700000000021",
+        "formatValue": {}
+      },
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "variableId": "22",
+        "name": "DLV - ecommerce",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "ecommerce"
+          }
+        ],
+        "fingerprint": "1700000000022",
+        "formatValue": {}
+      },
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "variableId": "23",
+        "name": "DLV - lead_type",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "lead_type"
+          }
+        ],
+        "fingerprint": "1700000000023",
+        "formatValue": {}
+      },
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "variableId": "24",
+        "name": "DLV - curso",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "curso"
+          }
+        ],
+        "fingerprint": "1700000000024",
+        "formatValue": {}
+      },
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "variableId": "25",
+        "name": "DLV - payment_type",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "payment_type"
+          }
+        ],
+        "fingerprint": "1700000000025",
+        "formatValue": {}
+      },
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "variableId": "26",
+        "name": "DLV - reserva_id",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "reserva_id"
+          }
+        ],
+        "fingerprint": "1700000000026",
+        "formatValue": {}
+      }
+    ],
+    "builtInVariable": [
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "type": "EVENT",
+        "name": "Event"
+      },
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "type": "PAGE_URL",
+        "name": "Page URL"
+      },
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "type": "PAGE_HOSTNAME",
+        "name": "Page Hostname"
+      },
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "type": "PAGE_PATH",
+        "name": "Page Path"
+      },
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "type": "REFERRER",
+        "name": "Referrer"
+      }
+    ],
+    "fingerprint": "1700000000000",
+    "tagManagerUrl": "https://tagmanager.google.com/#/versions/accounts/0000000000/containers/0000000000/versions/0?apiLink=version"
+  }
+}

@@ -5,6 +5,7 @@ import { adminActual } from '@/lib/auth';
 import { query } from '@/lib/db';
 import { linkWhatsApp } from '@/lib/admin-form';
 import { cuando, etiquetaFecha, peso } from '@/lib/format';
+import { origenLegible } from '@/lib/tracking/origen';
 import { Insignia, Titulo } from '../../componentes';
 import { avisarEspera, cancelarReserva, guardarNotaReserva, marcarPagado } from '../../actions';
 
@@ -44,7 +45,7 @@ async function Contenido({ searchParams }: PageProps<'/admin/reservas'>) {
               const msg = `Hola ${String(r.nombre).split(' ')[0]}, te escribo por tu reserva de ${r.corto}`;
               return (
                 <tr key={r.id}>
-                  <td><b>{r.nombre}</b><small>{r.email}</small><small>{r.tel}</small>{regalo?.para && <small>Regalo para {regalo.para}</small>}</td>
+                  <td><b>{r.nombre}</b><small>{r.email}</small><small>{r.tel}</small>{regalo?.para && <small>Regalo para {regalo.para}</small>}{origenLegible(r.tracking) && <small>Llegó desde: {origenLegible(r.tracking)}</small>}</td>
                   <td>{r.corto}{r.inicio && <small>{etiquetaFecha({ inicio: new Date(r.inicio).toISOString(), otrasClases: r.otras_clases })} · {r.hora}</small>}<small>Código {r.codigo}</small></td>
                   <td>
                     {r.estado === 'confirmada' && (resto > 0 ? <Insignia tono="warn">Dejó seña</Insignia> : <Insignia tono="good">Pagó el total</Insignia>)}

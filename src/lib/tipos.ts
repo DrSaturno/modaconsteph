@@ -66,4 +66,4 @@ export type DatosReserva = {
 };
 
 /** Después de reservar, la alumna va a `url`: el checkout de Mercado Pago o la página de su reserva. */
-export type ResultadoReserva = { ok: true; url: string } | { ok: false; error: string };
+export type ResultadoReserva = { ok: true; url: string; codigo?: string } | { ok: false; error: string };

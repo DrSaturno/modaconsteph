@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, useTransition, type ReactNode } from 'react';
 import { reservar } from '@/app/(sitio)/actions';
 import { cuposTexto, etiquetaFecha, esEmail, peso } from '@/lib/format';
+import { evento, itemDeCurso, leerRastreo } from '@/lib/tracking/cliente';
 import type { AjustesPublicos, Curso, Fecha } from '@/lib/tipos';
 
 type Abrir = (slug: string, fechaId?: string | null) => void;
@@ -52,6 +53,11 @@ export function BookingProvider({ catalogo, ajustes, children }: { catalogo: Cur
     const elegida = fechaId && c.fechas.some((x) => x.id === fechaId) ? fechaId : unica;
     setF({ ...VACIO, fechaId: elegida, metodo: c.medios === 'transferencia' ? 'transferencia' : 'mp' });
     setPaso(0); setErr(''); setCurso(c);
+    if (c.kind !== 'consulta') { // abrir la reserva = empezar el pago (begin_checkout en Analytics, InitiateCheckout en Meta)
+      const fe = c.fechas.find((x) => x.id === elegida);
+      const precio = fe?.precio ?? c.precio;
+      evento('begin_checkout', {}, { value: precio ?? undefined, items: [itemDeCurso(c, precio, fe?.edicion)] });
+    }
   }, [catalogo]);
 
   const cerrar = useCallback(() => {
@@ -118,9 +124,17 @@ export function BookingProvider({ catalogo, ajustes, children }: { catalogo: Cur
         cursoId: curso.id, fechaId: f.fechaId, nombre: f.nombre, email: f.email, tel: f.tel,
         primeraVez: f.primera === 'si', novedades: f.novedades, modo: f.modo, metodo: f.metodo, espera,
         motivo: f.motivo, regalo: curso.kind === 'regalo' ? f.regalo : null,
+        rastreo: leerRastreo(), // de dónde vino y los identificadores del navegador, para contar la compra en Meta y Analytics
       });
-      if (r.ok) window.location.assign(r.url);
-      else setErr(r.error);
+      if (!r.ok) { setErr(r.error); return; }
+      const ir = () => window.location.assign(r.url);
+      const ec = { value: aPagar ?? undefined, items: [itemDeCurso(curso, precio, fecha?.edicion)] };
+      if (curso.kind === 'consulta') evento('generate_lead', { lead_type: 'consulta', curso: curso.nombre }, undefined, ir);
+      else if (espera) evento('generate_lead', { lead_type: 'lista_espera', curso: curso.nombre }, undefined, ir);
+      else {
+        evento('add_payment_info', { payment_type: f.metodo }, ec);
+        evento('reserva_creada', { payment_type: f.metodo, reserva_id: r.codigo }, ec, ir); // la compra en sí se cuenta desde el servidor, cuando el pago se confirma
+      }
     });
   }
 

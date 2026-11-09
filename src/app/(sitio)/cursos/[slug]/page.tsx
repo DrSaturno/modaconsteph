@@ -6,6 +6,7 @@ import { huellaCaratula, propsCaratula } from '@/lib/caratula';
 import { cuposTexto, etiquetaFecha, peso } from '@/lib/format';
 import { Caratula } from '@/components/Caratula';
 import { Boletin } from '@/components/sitio/Boletin';
+import { VerCurso } from '@/components/sitio/Rastreo';
 import { Lugares, ReservarBtn } from '@/components/sitio/Reservas';
 
 // Los cursos conocidos salen prearmados (generateStaticParams); uno que no existe tiene que dar 404 de verdad,
@@ -37,6 +38,7 @@ export default async function FichaCurso({ params }: PageProps<'/cursos/[slug]'>
   const grupal = c.kind === 'fecha';
   return (
     <main>
+      <VerCurso slug={c.slug} nombre={c.nombre} tipo={c.tipo} precio={c.fechas[0]?.precio ?? c.precio} />
       <section className="hero mini">
         <div className="wrap hero-ficha">
           <div>

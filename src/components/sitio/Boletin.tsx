@@ -2,6 +2,7 @@
 
 import { useId, useState, useTransition } from 'react';
 import { suscribir } from '@/app/(sitio)/actions';
+import { evento } from '@/lib/tracking/cliente';
 
 /** Formulario de una línea para dejar el mail: novedades o aviso de próxima fecha. */
 export function Boletin({ origen, ok, boton, claro = false }: { origen: 'web' | 'espera' | 'pie'; ok: string; boton: string; claro?: boolean }) {
@@ -21,7 +22,10 @@ export function Boletin({ origen, ok, boton, claro = false }: { origen: 'web' | 
         e.preventDefault();
         empezar(async () => {
           const r = await suscribir(mail, origen, trampa);
-          if (r.ok) setHecho(true); else setMsg(r.mensaje);
+          if (r.ok) {
+            setHecho(true);
+            evento('generate_lead', { lead_type: origen === 'espera' ? 'aviso_proxima_fecha' : 'boletin' });
+          } else setMsg(r.mensaje);
         });
       }}
     >

@@ -7,6 +7,7 @@ import { calcularSena, esEmail, fechaLarga, precioEfectivo } from './format';
 import { permitir } from './limites';
 import { encolar, enviarAhora, programarConfirmada } from './mail/cola';
 import { crearPreferencia, mpConfigurado, simulacroActivo } from './mp';
+import { registrarCompra } from './tracking/servidor';
 import type { ResultadoReserva } from './tipos';
 
 const ALFABETO = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
@@ -18,7 +19,18 @@ const Persona = z.object({
   tel: z.string().trim().max(40).refine((t) => t.replace(/\D/g, '').length >= 8, 'Completá tu WhatsApp con código de área, por ejemplo 11 2345 6789.'),
   novedades: z.boolean().default(false),
 });
+/** De dónde vino la visita y los identificadores del navegador. Es un extra: si viene mal formado se ignora, nunca frena una reserva. */
+const Campania = z.object({
+  utm_source: z.string().max(200), utm_medium: z.string().max(200), utm_campaign: z.string().max(200),
+  utm_content: z.string().max(200), utm_term: z.string().max(200), fbclid: z.string().max(300), gclid: z.string().max(300),
+  referrer: z.string().max(200), landing: z.string().max(200), ts: z.number(),
+}).partial();
+const Rastreo = z.object({
+  fbp: z.string().max(120), fbc: z.string().max(200), gaClientId: z.string().max(60), gaSessionId: z.string().max(20), url: z.string().max(400),
+  primero: Campania, ultimo: Campania,
+}).partial();
 const Reserva = Persona.extend({
+  rastreo: Rastreo.optional().catch(undefined),
   cursoId: z.uuid(),
   fechaId: z.uuid().nullable(),
   primeraVez: z.boolean().default(true),
@@ -46,7 +58,7 @@ async function suscribirSiquiere(email: string, quiere: boolean, origen: string)
 }
 
 /** La alumna reserva. El cupo se controla acá, con la fecha bloqueada, así dos personas no se llevan el mismo último lugar. */
-export async function crearReserva(entrada: unknown, ip: string): Promise<ResultadoReserva> {
+export async function crearReserva(entrada: unknown, ip: string, ua = ''): Promise<ResultadoReserva> {
   const p = Reserva.safeParse(entrada);
   if (!p.success) return { ok: false, error: primerError(p.error) };
   const d = p.data;
@@ -108,8 +120,12 @@ export async function crearReserva(entrada: unknown, ip: string): Promise<Result
   });
   if ('error' in r) return { ok: false, error: r.error };
 
+  // el origen va aparte de la reserva: es un extra y, si falla (o la columna todavía no existe), la reserva sigue igual
+  await query(`update reservas set tracking = $2::text::jsonb where id = $1`,
+    [r.id, JSON.stringify({ ...d.rastreo, ip: ip.slice(0, 64), ua: ua.slice(0, 300) })])
+    .catch((e) => console.error('No se pudo guardar el origen de la reserva', e));
   await suscribirSiquiere(d.email, d.novedades, 'reserva');
-  if (r.estado === 'espera') return { ok: true, url: `/reserva/${codigo}` };
+  if (r.estado === 'espera') return { ok: true, url: `/reserva/${codigo}`, codigo };
 
   /** Si esta reserva dejó la fecha con un solo lugar libre, Steph lo sabe (aparte del aviso de la reserva). Nunca rompe la reserva. */
   const avisarUltimoLugar = async () => {
@@ -124,13 +140,13 @@ export async function crearReserva(entrada: unknown, ip: string): Promise<Result
   if (d.metodo === 'mp') {
     if (simulacroActivo()) {
       await avisarUltimoLugar();
-      return { ok: true, url: `/reserva/${codigo}/simulacro` };
+      return { ok: true, url: `/reserva/${codigo}/simulacro`, codigo };
     }
     try {
       const pref = await crearPreferencia({ codigo, titulo: r.titulo, monto: r.monto, nombre: d.nombre, email: d.email, venceMin: a.mp_hold_min });
       await query(`update reservas set mp_preferencia = $2 where id = $1`, [r.id, pref.id]);
       await avisarUltimoLugar();
-      return { ok: true, url: pref.url };
+      return { ok: true, url: pref.url, codigo };
     } catch (e) {
       console.error('No se pudo crear el pago en Mercado Pago', e);
       await query(`update reservas set estado = 'cancelada', vence_en = null where id = $1`, [r.id]);
@@ -144,7 +160,7 @@ export async function crearReserva(entrada: unknown, ip: string): Promise<Result
   ];
   await enviarAhora(ids);
   await avisarUltimoLugar();
-  return { ok: true, url: `/reserva/${codigo}` };
+  return { ok: true, url: `/reserva/${codigo}`, codigo };
 }
 
 async function crearConsulta(d: z.output<typeof Reserva>, curso: Record<string, any>): Promise<ResultadoReserva> {
@@ -168,7 +184,7 @@ export type ResultadoPago = 'confirmada' | 'ya_confirmada' | 'fuera_de_plazo' | 
 
 /** Un pago llegó (Mercado Pago o Steph lo marcó a mano). Puede llamarse varias veces con el mismo pago sin duplicar nada. */
 export async function confirmarPago(codigo: string, pago: { monto: number; mpPago?: string }): Promise<ResultadoPago> {
-  const r = await tx<{ res: ResultadoPago; ids: string[] }>(async (q) => {
+  const r = await tx<{ res: ResultadoPago; ids: string[]; reservaId?: string }>(async (q) => {
     const rs = (await q(
       `select r.*, c.kind from reservas r join cursos c on c.id = r.curso_id where r.codigo = $1 for update of r`, [codigo]))[0];
     if (!rs) return { res: 'no_encontrada', ids: [] };
@@ -196,9 +212,10 @@ export async function confirmarPago(codigo: string, pago: { monto: number; mpPag
       id: rs.id, email: rs.email, kind: rs.kind,
       inicio: f ? new Date(f.inicio) : null, fin: f?.fin ? new Date(f.fin) : null, regalo: rs.regalo,
     });
-    return { res: 'confirmada', ids };
+    return { res: 'confirmada', ids, reservaId: rs.id };
   });
   await enviarAhora(r.ids);
+  if (r.res === 'confirmada' && r.reservaId) await registrarCompra(r.reservaId); // cuenta la venta en Meta y Analytics (solo la primera confirmación)
   return r.res;
 }
 

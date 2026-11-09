@@ -89,6 +89,8 @@ create table if not exists reservas (
   created_at      timestamptz not null default now(),
   updated_at      timestamptz not null default now()
 );
+-- seguimiento: de dónde vino la reserva (campaña, anuncio) e identificadores del navegador para contar la compra en Meta y Analytics
+alter table reservas add column if not exists tracking jsonb;
 create index if not exists reservas_fecha_idx on reservas (fecha_id, estado);
 create index if not exists reservas_email_idx on reservas (lower(email));
 
