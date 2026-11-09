@@ -1,6 +1,6 @@
 {
   "exportFormatVersion": 2,
-  "exportTime": "2026-11-08 22:25:32",
+  "exportTime": "2026-11-09 02:24:08",
   "containerVersion": {
     "path": "accounts/0000000000/containers/0000000000/versions/0",
     "accountId": "0000000000",
@@ -135,6 +135,21 @@
                     "value": "{{DLV - reserva_id}}"
                   }
                 ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "ubicacion"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - ubicacion}}"
+                  }
+                ]
               }
             ]
           }
@@ -150,7 +165,7 @@
         "consentSettings": {
           "consentStatus": "NOT_SET"
         },
-        "notes": "view_item, begin_checkout, add_payment_info, generate_lead y reserva_creada. La compra (purchase) la manda el servidor."
+        "notes": "view_item, begin_checkout, add_payment_info, generate_lead, reserva_creada, click_whatsapp y click_instagram. La compra (purchase) la manda el servidor."
       },
       {
         "accountId": "0000000000",
@@ -224,7 +239,7 @@
           {
             "type": "TEMPLATE",
             "key": "html",
-            "value": "<script>\n(function () {\n  if (typeof fbq !== 'function') { return; }\n  var evento = {{Event}};\n  var lead = {{DLV - lead_type}};\n  var ec = {{DLV - ecommerce}} || {};\n  var item = (ec.items && ec.items[0]) || {};\n  // evento de la web -> evento estándar de Meta (se cambia acá, sin tocar el código de la web)\n  var MAPA = {\n    view_item: 'ViewContent',\n    begin_checkout: 'InitiateCheckout',\n    add_payment_info: 'AddPaymentInfo',\n    reserva_creada: 'Schedule',\n    generate_lead: (lead === 'boletin' ? 'Subscribe' : 'Lead')\n  };\n  var nombre = MAPA[evento];\n  if (!nombre) { return; }\n  var datos = {};\n  if (ec.value != null) { datos.value = ec.value; datos.currency = ec.currency || 'ARS'; }\n  if (item.item_id) { datos.content_ids = [item.item_id]; datos.content_type = 'product'; datos.content_name = item.item_name; }\n  if (lead) { datos.content_category = lead; }\n  fbq('track', nombre, datos);\n})();\n</script>"
+            "value": "<script>\n(function () {\n  if (typeof fbq !== 'function') { return; }\n  var evento = {{Event}};\n  var lead = {{DLV - lead_type}};\n  var ubic = {{DLV - ubicacion}};\n  var ec = {{DLV - ecommerce}} || {};\n  var item = (ec.items && ec.items[0]) || {};\n  // evento de la web -> evento estándar de Meta (se cambia acá, sin tocar el código de la web)\n  var MAPA = {\n    view_item: 'ViewContent',\n    begin_checkout: 'InitiateCheckout',\n    add_payment_info: 'AddPaymentInfo',\n    reserva_creada: 'Schedule',\n    click_whatsapp: 'Contact',\n    generate_lead: (lead === 'boletin' ? 'Subscribe' : 'Lead')\n  };\n  var nombre = MAPA[evento];\n  if (!nombre) { return; }\n  var datos = {};\n  if (ec.value != null) { datos.value = ec.value; datos.currency = ec.currency || 'ARS'; }\n  if (item.item_id) { datos.content_ids = [item.item_id]; datos.content_type = 'product'; datos.content_name = item.item_name; }\n  if (lead) { datos.content_category = lead; } else if (ubic) { datos.content_category = ubic; }\n  fbq('track', nombre, datos);\n})();\n</script>"
           },
           {
             "type": "BOOLEAN",
@@ -243,7 +258,7 @@
         "consentSettings": {
           "consentStatus": "NOT_SET"
         },
-        "notes": "ViewContent, InitiateCheckout, AddPaymentInfo, Schedule, Lead y Subscribe. Purchase lo manda el servidor (API de Conversiones)."
+        "notes": "ViewContent, InitiateCheckout, AddPaymentInfo, Schedule, Lead, Subscribe y Contact (clic a WhatsApp). Purchase lo manda el servidor (API de Conversiones). Los clics a Instagram van solo a Analytics."
       }
     ],
     "trigger": [
@@ -274,7 +289,7 @@
               {
                 "type": "TEMPLATE",
                 "key": "arg1",
-                "value": "^(view_item|begin_checkout|add_payment_info|generate_lead|reserva_creada)$"
+                "value": "^(view_item|begin_checkout|add_payment_info|generate_lead|reserva_creada|click_whatsapp|click_instagram)$"
               }
             ]
           }
@@ -467,6 +482,32 @@
           }
         ],
         "fingerprint": "1700000000026",
+        "formatValue": {}
+      },
+      {
+        "accountId": "0000000000",
+        "containerId": "0000000000",
+        "variableId": "27",
+        "name": "DLV - ubicacion",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "ubicacion"
+          }
+        ],
+        "fingerprint": "1700000000027",
         "formatValue": {}
       }
     ],

@@ -3,7 +3,7 @@ import './site.css';
 import './booking.css';
 import { getAjustesPublicos, getCatalogo } from '@/lib/catalogo';
 import { BookingProvider } from '@/components/sitio/Reservas';
-import { RastreoRutas } from '@/components/sitio/Rastreo';
+import { ClicsContacto, RastreoRutas } from '@/components/sitio/Rastreo';
 import { BarraCelular, Cabecera, Pie } from '@/components/sitio/secciones';
 
 export default async function SitioLayout({ children }: LayoutProps<'/'>) {
@@ -15,6 +15,7 @@ export default async function SitioLayout({ children }: LayoutProps<'/'>) {
       <Pie aj={aj} />
       <BarraCelular catalogo={catalogo} aj={aj} />
       <Suspense fallback={null}><RastreoRutas /></Suspense>
+      <ClicsContacto />
     </BookingProvider>
   );
 }

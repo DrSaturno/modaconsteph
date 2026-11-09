@@ -22,6 +22,40 @@ export function RastreoRutas() {
   return null;
 }
 
+/** Desde dónde se hizo el clic: sirve para saber qué botón de WhatsApp o Instagram funciona mejor. */
+function ubicacionDe(a: Element): string {
+  if (a.closest('footer')) return 'pie';
+  if (a.closest('.sticky')) return 'barra_celular';
+  const ruta = window.location.pathname;
+  if (ruta.startsWith('/cursos/')) return 'ficha_curso';
+  if (ruta.startsWith('/reserva/')) return 'reserva';
+  return 'portada';
+}
+
+/**
+ * Cuenta los clics a WhatsApp e Instagram de cualquier enlace de las páginas públicas (pie, barra del celular, fichas, reserva).
+ * click_whatsapp llega a Analytics y a Meta (evento Contact); click_instagram, solo a Analytics.
+ * Los enlaces abren otra pestaña, así que no hace falta esperar nada antes de que la página cambie.
+ */
+export function ClicsContacto() {
+  useEffect(() => {
+    const alClic = (e: MouseEvent) => {
+      try {
+        const a = (e.target as Element | null)?.closest?.('a[href]') as HTMLAnchorElement | null;
+        if (!a) return;
+        const host = new URL(a.href, window.location.href).hostname.replace(/^www\./, '');
+        const canal = host === 'wa.me' || host === 'api.whatsapp.com' ? 'whatsapp' : host === 'instagram.com' ? 'instagram' : '';
+        if (canal) evento(`click_${canal}`, { ubicacion: ubicacionDe(a) });
+      } catch { /* el seguimiento nunca rompe la web */ }
+    };
+    // "click" cubre el clic normal y el toque; "auxclick", el clic con la rueda (abrir en otra pestaña)
+    document.addEventListener('click', alClic);
+    document.addEventListener('auxclick', alClic);
+    return () => { document.removeEventListener('click', alClic); document.removeEventListener('auxclick', alClic); };
+  }, []);
+  return null;
+}
+
 /** Ficha de un curso: avisa que alguien está mirando esa propuesta (view_item en Analytics, ViewContent en Meta). */
 export function VerCurso({ slug, nombre, tipo, precio }: { slug: string; nombre: string; tipo: string; precio: number | null }) {
   const enviado = useRef('');

@@ -19,6 +19,8 @@ El seguimiento solo corre en la web publicada (producción en Vercel). En local:
 
 Queda cargado: la etiqueta de Google (Analytics 4), el Pixel (base + PageView + cambios de página) y los eventos del embudo.
 
+Para **actualizar** un contenedor ya instalado (por ejemplo, cuando se suman eventos), se importa el archivo nuevo con **Combinar > Sobrescribir las etiquetas, activadores y variables en conflicto**, se revisa en Vista previa y se publica. El archivo se genera con `python tracking/generar-contenedor.py tracking/gtm-contenedor-modaconsteph.json`: ahí se cambian los eventos y la correspondencia con los eventos estándar de Meta.
+
 ## 2. Eventos que manda la web
 
 | Qué hace la alumna | Evento (Tag Manager) | Analytics 4 | Meta |
@@ -31,6 +33,8 @@ Queda cargado: la etiqueta de Google (Analytics 4), el Pixel (base + PageView + 
 | Reserva creada (pendiente o con pago en curso) | `reserva_creada` | `reserva_creada` | `Schedule` |
 | Consulta o lista de espera | `generate_lead` | `generate_lead` | `Lead` |
 | Boletín o aviso de próxima fecha | `generate_lead` (`lead_type`) | `generate_lead` | `Subscribe` / `Lead` |
+| Toca el botón de WhatsApp (pie, barra del celular, ficha, reserva) | `click_whatsapp` (`ubicacion`) | `click_whatsapp` | `Contact` |
+| Toca el enlace a Instagram | `click_instagram` (`ubicacion`) | `click_instagram` | no se manda |
 | **Pago confirmado** | desde el servidor | `purchase` | `Purchase` |
 
 La compra no la cuenta el navegador: la transferencia la confirma Steph a mano en el panel, a veces horas después, y Mercado Pago avisa por su cuenta. Por eso `src/lib/tracking/servidor.ts` manda `Purchase` a Meta (API de Conversiones) y `purchase` a Analytics (Measurement Protocol) cuando el pago se confirma (`confirmarPago`). Para atribuirla a la persona y al anuncio correcto, al reservar se guarda en la reserva (`reservas.tracking`): cookies `_fbp`/`_fbc`/`_ga`, campaña (`utm_*`, `fbclid`, `gclid`), sitio de origen, IP y navegador. El panel muestra "Llegó desde" en cada reserva. Meta evita contar dos veces con el `event_id` `compra-<código>`; Analytics, con `transaction_id`.
