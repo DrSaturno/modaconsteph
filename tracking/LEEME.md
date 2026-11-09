@@ -68,3 +68,20 @@ Sin estas claves la reserva funciona igual: el envío se omite y queda anotado e
 - En Analytics, marcar `purchase` y `generate_lead` como eventos clave (Administrar > Eventos).
 - Páginas de privacidad y cookies (`/privacidad` y `/cookies`, enlazadas en el pie): publicadas el 2026-11-09. Falta que Steph las lea y confirme los datos (mail de contacto, proveedores) y que consulte con su contador o abogada si debe inscribir la base de datos en el Registro Nacional de Bases de Datos de la AAIP. Si se suma otra herramienta que usa cookies (por ejemplo Clarity), hay que agregarla a `/cookies` y actualizar la fecha en `src/components/sitio/Legal.tsx`.
 - Antes de apuntar el dominio a la web nueva, comprobar todo lo anterior: cuando cambia el dominio, el seguimiento de Tiendup se corta.
+
+## 6. Pendientes (anotado el 2026-11-09)
+
+**Analytics (configuración, la hace Nicolás desde la cuenta de la propiedad):**
+- Filtro de tráfico interno: regla con la IP de Nicolás y de Steph, y pasar el filtro "Internal Traffic" de Prueba a Activo.
+- Referencias no deseadas: `mercadopago.com.ar` y `mercadopago.com`.
+- Dimensiones personalizadas de evento: `ubicacion` y `lead_type`.
+- Vincular Search Console (Administrar > Vinculación de productos).
+- Cambiar la dirección del flujo web a `modaconsteph.com` (solo etiqueta).
+
+**Meta:** autorizar `modaconsteph.com` y `modaconsteph.com.ar` en Diagnóstico del píxel (sin restringir otros dominios); revisar la calidad de coincidencia de `Purchase` tras las primeras ventas reales.
+
+**Cobro y lanzamiento:** claves de Mercado Pago (`MP_ACCESS_TOKEN`, `MP_WEBHOOK_SECRET`) y pago de prueba real el 2026-11-10 (valida también la compra desde el aviso automático); CBU de Steph en el panel; plan Pro de Vercel o cuenta de Steph (Hobby no permite uso comercial); cargar fechas de diciembre en el panel.
+
+**Dominio viejo:** apuntar el DNS de `modaconsteph.com.ar` (Route 53, acceso por confirmar) a Vercel; las redirecciones ya están hechas. Antes, Steph exporta de Tiendup clientas, suscriptores, pedidos y blog.
+
+**Después de lanzar:** cambiar los links de Instagram y de la ficha de Google a `modaconsteph.com` con los parámetros de origen; revisar en el panel de Meta que el precio de los anuncios coincida con el de la web.
