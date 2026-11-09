@@ -92,3 +92,7 @@ Para quien programe:
 - Migración del blog y redirecciones desde las URLs de Tiendup.
 - Textos de ejemplo a confirmar con Steph: política de cambios, seña de 30 %, programa de cada curso.
 - Instagram de Steph (Ajustes) y mail desde el que salen los avisos.
+
+## Paleta de marca
+
+Todo lo que se crea para Moda con Steph (web, panel, mails, gift cards, piezas, PDF) usa la paleta oficial de `brand/PALETA.md`. Leerla antes de crear algo nuevo.

@@ -12,12 +12,13 @@ export function sustituir(texto: string, vars: Record<string, string>): string {
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 /* Paleta y tipografía que pidió Steph: fondo, letras y títulos. El resto son tintes de esos mismos colores. */
-const FONDO = '#f7f6f4';
-const LETRA = '#231f20';
-const TITULO = '#c67fa1';
-const TINTE = '#f2eaec'; // TITULO al 10 % sobre FONDO
-const LINEA = '#e6d3dc';
-const SUAVE = '#625f60'; // LETRA al 70 % sobre FONDO, para el pie
+// Paleta oficial (src/app/paleta.css; fuente: brand/paleta-de-colores.jpg)
+const FONDO = '#FAF6F7'; // crema
+const LETRA = '#2B2B2B'; // grafito
+const TITULO = '#D07AA3'; // rosa principal
+const TINTE = '#F3DCE6'; // rosa claro
+const LINEA = '#C9B7B6'; // taupe
+const SUAVE = '#696868'; // grafito al 70 % sobre el crema, para el pie
 const FUENTE = "Poppins,'Helvetica Neue',Helvetica,Arial,sans-serif";
 
 type Bloque =

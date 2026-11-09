@@ -15,10 +15,13 @@ export const MOTIVOS = [
 ] as const;
 export type Motivo = (typeof MOTIVOS)[number]['id'];
 
-/** Los tres colores de Moda con Steph (los mismos de src/app/paleta.css). No se usa ninguno más. */
-export const FONDO = '#f7f6f4';
-export const LETRA = '#231f20';
-export const TITULO = '#c67fa1';
+/** Colores de Moda con Steph (los mismos de src/app/paleta.css; fuente: brand/paleta-de-colores.jpg). No se usa ninguno más. */
+export const FONDO = '#FAF6F7'; // crema
+export const LETRA = '#2B2B2B'; // grafito
+export const TITULO = '#D07AA3'; // rosa principal
+export const ROSA_CLARO = '#F3DCE6';
+export const TAUPE = '#C9B7B6';
+export const MALVA = '#8C5A7D'; // malva profundo, acento
 
 const canal = (hex: string, i: number) => parseInt(hex.slice(1 + i * 2, 3 + i * 2), 16);
 /** Mezcla de dos colores de la paleta: t = 0 es `a`, t = 1 es `b`. */
@@ -55,7 +58,7 @@ export type PaletaDef = {
   reflejo: string;
 };
 
-const ROSA_PROFUNDO = mezcla(TITULO, LETRA, 0.4);
+const ROSA_PROFUNDO = MALVA;
 
 export const PALETAS = {
   ciruela: {
@@ -74,7 +77,7 @@ export const PALETAS = {
     centro: LETRA, marco: LETRA, vidrio: clara(0.2), chispa: TITULO, bombita: FONDO, acento: LETRA, reflejo: FONDO,
   },
   luz: {
-    nombre: 'Rosa suave', fondo: clara(0.45), fondo2: clara(0.18), tinta: LETRA, tinta2: mezcla(LETRA, FONDO, 0.12), linea: conAlfa(LETRA, 0.22),
+    nombre: 'Rosa suave', fondo: ROSA_CLARO, fondo2: mezcla(ROSA_CLARO, FONDO, 0.5), tinta: LETRA, tinta2: mezcla(LETRA, FONDO, 0.12), linea: conAlfa(LETRA, 0.22),
     rampa: [FONDO, clara(0.18), TITULO, oscura(0.25), oscura(0.45), oscura(0.65), LETRA],
     centro: LETRA, marco: LETRA, vidrio: clara(0.1), chispa: FONDO, bombita: FONDO, acento: FONDO, reflejo: FONDO,
   },
