@@ -24,6 +24,7 @@ export function RastreoRutas() {
 
 /** Desde dónde se hizo el clic: sirve para saber qué botón de WhatsApp o Instagram funciona mejor. */
 function ubicacionDe(a: Element): string {
+  if (a.closest('.wa-burbuja')) return 'burbuja';
   if (a.closest('footer')) return 'pie';
   if (a.closest('.sticky')) return 'barra_celular';
   const ruta = window.location.pathname;

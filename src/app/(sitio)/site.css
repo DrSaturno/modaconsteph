@@ -223,7 +223,6 @@ footer{background:var(--letra);color:var(--sobre-oscuro);padding-block:56px 40px
   body{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
   .sticky{display:flex;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:40;padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:color-mix(in srgb,var(--letra) 96%,transparent)}
   .sticky .btn{flex:1}
-  .sticky a.wa{flex:none;width:50px;min-height:50px;border-radius:50%;display:grid;place-items:center;background:transparent;box-shadow:inset 0 0 0 1.5px var(--sobre-oscuro);color:var(--fondo);text-decoration:none;font-weight:600;font-size:13px}
   #toast{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
 }
 @media (prefers-reduced-motion:reduce){.bulb{animation:none}.btn{transition:none}html{scroll-behavior:auto}}
@@ -295,3 +294,11 @@ footer{background:var(--letra);color:var(--sobre-oscuro);padding-block:56px 40px
 .legal-tabla th{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--suave);background:var(--tinte-0)}
 .legal-tabla code{font-size:13px;white-space:nowrap}
 .legal-volver{margin-top:48px}
+
+/* Burbuja de WhatsApp: en compu y en celular (en el celular sube para no tapar la barra de reservar) */
+.wa-burbuja{position:fixed;right:max(24px,env(safe-area-inset-right,0px));bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:35;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--letra);color:var(--fondo);text-decoration:none;box-shadow:0 0 0 2px var(--titulo),0 10px 28px var(--sombra);transition:transform .18s ease,box-shadow .18s ease}
+.wa-burbuja:hover,.wa-burbuja:focus-visible{transform:translateY(-2px) scale(1.04);box-shadow:0 0 0 3px var(--titulo),0 14px 32px var(--sombra)}
+.wa-burbuja::before{content:attr(data-etiqueta);position:absolute;right:70px;top:50%;transform:translateY(-50%);white-space:nowrap;background:var(--letra);color:var(--fondo);font-size:13px;font-weight:500;padding:8px 14px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .15s ease}
+.wa-burbuja:hover::before,.wa-burbuja:focus-visible::before{opacity:1}
+@media (prefers-reduced-motion:reduce){.wa-burbuja,.wa-burbuja::before{transition:none}.wa-burbuja:hover,.wa-burbuja:focus-visible{transform:none}}
+@media (max-width:640px){.wa-burbuja{right:max(16px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));width:54px;height:54px}.wa-burbuja::before{display:none}}

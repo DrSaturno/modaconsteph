@@ -4,7 +4,7 @@ import './booking.css';
 import { getAjustesPublicos, getCatalogo } from '@/lib/catalogo';
 import { BookingProvider } from '@/components/sitio/Reservas';
 import { ClicsContacto, RastreoRutas } from '@/components/sitio/Rastreo';
-import { BarraCelular, Cabecera, Pie } from '@/components/sitio/secciones';
+import { BarraCelular, BurbujaWhatsApp, Cabecera, Pie } from '@/components/sitio/secciones';
 
 export default async function SitioLayout({ children }: LayoutProps<'/'>) {
   const [catalogo, aj] = await Promise.all([getCatalogo(), getAjustesPublicos()]);
@@ -13,7 +13,8 @@ export default async function SitioLayout({ children }: LayoutProps<'/'>) {
       <Cabecera />
       {children}
       <Pie aj={aj} />
-      <BarraCelular catalogo={catalogo} aj={aj} />
+      <BarraCelular catalogo={catalogo} />
+      <BurbujaWhatsApp aj={aj} />
       <Suspense fallback={null}><RastreoRutas /></Suspense>
       <ClicsContacto />
     </BookingProvider>
