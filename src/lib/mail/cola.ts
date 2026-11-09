@@ -114,7 +114,7 @@ export async function enviarMail(id: string): Promise<'enviado' | 'omitido' | 'e
     const asunto = sustituir(p.asunto, vars);
     await enviarCorreo({
       de: { nombre: a.remitente_nombre, email: a.remitente_email || 'dev@localhost' },
-      para, asunto, texto, html: aHtml(texto, asunto),
+      para, asunto, texto, html: aHtml(texto, asunto, m.plantilla),
       responderA: a.mail_steph || undefined,
     });
     await query(`update mails set estado = 'enviado', enviado_en = now(), error = null, reclamado_en = null where id = $1`, [id]);

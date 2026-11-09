@@ -82,7 +82,24 @@ function aBloques(texto: string): Bloque[] {
 
 const P = `margin:0 0 16px;font-size:16px;line-height:1.65;color:${LETRA};overflow-wrap:anywhere`;
 
-function bloqueHtml(b: Bloque): string {
+/**
+ * Marca de origen en los links de los mails: así Analytics cuenta a quien entra desde un mail como "Email" y no como visita directa.
+ * Solo en links a la web pública (nunca al panel) y solo si el link no trae ya su propia marca.
+ */
+export function conOrigen(url: string, campania: string): string {
+  try {
+    const base = siteUrl();
+    if (!campania || !url.startsWith(base) || url.startsWith(`${base}/admin`)) return url;
+    const u = new URL(url);
+    if (u.searchParams.has('utm_source')) return url;
+    u.searchParams.set('utm_source', 'brevo');
+    u.searchParams.set('utm_medium', 'email');
+    u.searchParams.set('utm_campaign', campania);
+    return u.toString();
+  } catch { return url; }
+}
+
+function bloqueHtml(b: Bloque, campania = ''): string {
   switch (b.t) {
     case 'texto':
       return `<p style="${P}">${b.lineas.map(esc).join('<br>')}</p>`;
@@ -93,16 +110,16 @@ function bloqueHtml(b: Bloque): string {
         b.filas.map(([k, v], i) => `<p style="margin:0 0 ${i === b.filas.length - 1 ? 0 : 6}px;font-size:15px;line-height:1.55;color:${LETRA};overflow-wrap:anywhere"><span style="font-weight:600">${esc(k)}:</span> ${esc(v)}</p>`).join('')
       }</td></tr></table>`;
     case 'boton':
-      return `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:4px 0 22px"><tr><td bgcolor="${LETRA}" style="border-radius:999px"><a href="${esc(b.url)}" style="display:inline-block;padding:14px 30px;font-family:${FUENTE};font-size:15px;font-weight:600;line-height:1.2;color:${FONDO};text-decoration:none;border-radius:999px">${esc(b.etiqueta)}</a></td></tr></table>`;
+      return `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:4px 0 22px"><tr><td bgcolor="${LETRA}" style="border-radius:999px"><a href="${esc(conOrigen(b.url, campania))}" style="display:inline-block;padding:14px 30px;font-family:${FUENTE};font-size:15px;font-weight:600;line-height:1.2;color:${FONDO};text-decoration:none;border-radius:999px">${esc(b.etiqueta)}</a></td></tr></table>`;
     case 'firma':
       return `<p style="margin:6px 0 0;font-family:${FUENTE};font-size:20px;font-weight:600;line-height:1.3;color:${TITULO}">${esc(b.nombre)}</p>`;
   }
 }
 
 /** Texto plano (como lo escribe Steph) a un mail con la marca: logo, paleta del cliente y títulos en Poppins. */
-export function aHtml(texto: string, titulo = ''): string {
+export function aHtml(texto: string, titulo = '', campania = ''): string {
   const base = siteUrl();
-  const cuerpo = aBloques(texto).map(bloqueHtml).join('');
+  const cuerpo = aBloques(texto).map((b) => bloqueHtml(b, campania)).join('');
   const preheader = esc(texto.replace(/^Hola[^\n]*\n+/, '').replace(/\s+/g, ' ').trim().slice(0, 110));
   const h1 = titulo
     ? `<tr><td class="pad" style="padding:22px 36px 14px"><h1 class="h1" style="margin:0;font-family:${FUENTE};font-size:26px;font-weight:600;line-height:1.25;color:${TITULO}">${esc(titulo)}</h1></td></tr>`
@@ -117,7 +134,7 @@ export function aHtml(texto: string, titulo = ''): string {
 <tr><td style="height:4px;line-height:4px;font-size:0;background:${TITULO}">&nbsp;</td></tr>
 <tr><td align="center" style="padding:0 12px 32px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;font-family:${FUENTE}">
-<tr><td align="center" style="padding:36px 36px 4px"><a href="${esc(base)}"><img src="${esc(base)}/img/logo-rosa-mail.png" alt="Moda con Steph" width="190" style="display:block;width:190px;max-width:100%;height:auto;border:0"></a></td></tr>
+<tr><td align="center" style="padding:36px 36px 4px"><a href="${esc(conOrigen(base, campania))}"><img src="${esc(base)}/img/logo-rosa-mail.png" alt="Moda con Steph" width="190" style="display:block;width:190px;max-width:100%;height:auto;border:0"></a></td></tr>
 ${h1}
 <tr><td class="pad" style="padding:6px 36px 10px">${cuerpo}</td></tr>
 <tr><td class="pad" style="padding:8px 36px 0"><p style="margin:0;border-top:1px solid ${LINEA};padding-top:18px;font-size:12px;line-height:1.5;color:${SUAVE}">Moda con Steph · Estudio de maquillaje e imagen · Belgrano, CABA</p></td></tr>

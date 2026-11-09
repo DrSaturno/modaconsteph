@@ -41,6 +41,8 @@ La compra no la cuenta el navegador: la transferencia la confirma Steph a mano e
 
 Requisito en la base: la columna `reservas.tracking` (`alter table reservas add column if not exists tracking jsonb;`, ya está en `db/schema.sql`). Sin la columna las reservas funcionan igual, pero no se guarda el origen ni se envían las compras.
 
+**Mails:** los links a la web pública que salen en los mails automáticos llevan `utm_source=brevo&utm_medium=email&utm_campaign=<plantilla>` (por ejemplo `confirmacion` o `recordatorio_48h`), así Analytics los cuenta como "Email". No se marcan los links al panel (`/admin`), ni los que ya traen su propia marca, ni los externos (`conOrigen` en `src/lib/mail/plantillas.ts`). Las campañas que se manden desde Brevo se marcan desde Brevo.
+
 ## 3. Claves del servidor (variables en Vercel, las carga una persona)
 
 | Variable | De dónde sale | Para qué |
