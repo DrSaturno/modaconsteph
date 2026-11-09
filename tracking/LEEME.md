@@ -14,8 +14,7 @@ El seguimiento solo corre en la web publicada (producción en Vercel). En local:
 ## 1. Instalar las etiquetas en Tag Manager (una sola vez)
 
 1. En [tagmanager.google.com](https://tagmanager.google.com) abrir el contenedor `GTM-KC6FGSH8`.
-2. **Administrar > Importar contenedor**, elegir `tracking/gtm-contenedor-modaconsteph.json`,
-   espacio de trabajo "Default Workspace" y opción **Combinar > Cambiar el nombre de las etiquetas, activadores y variables en conflicto**.
+2. **Administrar > Importar contenedor**, elegir `tracking/gtm-contenedor-modaconsteph.json`, espacio de trabajo "Default Workspace" y la opción **Combinar > Cambiar el nombre de las etiquetas, activadores y variables en conflicto**.
 3. **Enviar > Publicar**.
 
 Queda cargado: la etiqueta de Google (Analytics 4), el Pixel (base + PageView + cambios de página) y los eventos del embudo.
@@ -34,11 +33,9 @@ Queda cargado: la etiqueta de Google (Analytics 4), el Pixel (base + PageView + 
 | Boletín o aviso de próxima fecha | `generate_lead` (`lead_type`) | `generate_lead` | `Subscribe` / `Lead` |
 | **Pago confirmado** | desde el servidor | `purchase` | `Purchase` |
 
-La compra no la cuenta el navegador: la transferencia la confirma Steph a mano en el panel, a veces horas después, y Mercado Pago
-avisa por su cuenta. Por eso `src/lib/tracking/servidor.ts` manda `Purchase` a Meta (API de Conversiones) y `purchase` a Analytics
-(Measurement Protocol) cuando el pago se confirma (`confirmarPago`). Para atribuirla a la persona y al anuncio correcto, al reservar
-se guarda en la reserva (`reservas.tracking`): cookies `_fbp`/`_fbc`/`_ga`, campaña (`utm_*`, `fbclid`, `gclid`), sitio de origen, IP y navegador.
-El panel muestra "Llegó desde" en cada reserva. Meta evita contar dos veces con el `event_id` `compra-<código>`; Analytics, con `transaction_id`.
+La compra no la cuenta el navegador: la transferencia la confirma Steph a mano en el panel, a veces horas después, y Mercado Pago avisa por su cuenta. Por eso `src/lib/tracking/servidor.ts` manda `Purchase` a Meta (API de Conversiones) y `purchase` a Analytics (Measurement Protocol) cuando el pago se confirma (`confirmarPago`). Para atribuirla a la persona y al anuncio correcto, al reservar se guarda en la reserva (`reservas.tracking`): cookies `_fbp`/`_fbc`/`_ga`, campaña (`utm_*`, `fbclid`, `gclid`), sitio de origen, IP y navegador. El panel muestra "Llegó desde" en cada reserva. Meta evita contar dos veces con el `event_id` `compra-<código>`; Analytics, con `transaction_id`.
+
+Requisito en la base: la columna `reservas.tracking` (`alter table reservas add column if not exists tracking jsonb;`, ya está en `db/schema.sql`). Sin la columna las reservas funcionan igual, pero no se guarda el origen ni se envían las compras.
 
 ## 3. Claves del servidor (variables en Vercel, las carga una persona)
 
@@ -52,18 +49,16 @@ Sin estas claves la reserva funciona igual: el envío se omite y queda anotado e
 
 ## 4. Cómo verificar
 
-- **Tag Manager**: botón *Vista previa*, pegar la dirección de la web. Tiene que aparecer "Connected" y las etiquetas disparándose.
-- **Analytics 4**: *Informes > Tiempo real*: entrás a la web y aparecés. *Administrar > DebugView* muestra cada evento al detalle.
-- **Pixel de Meta**: extensión de Chrome "Meta Pixel Helper" y, en el Administrador de eventos, *Probar eventos* y *Diagnóstico*.
-- **Compra desde el servidor**: con `META_TEST_EVENT_CODE` cargada, confirmar una reserva de prueba y mirar *Probar eventos* de Meta.
-  En Analytics, el evento `purchase` aparece en *Tiempo real* y en DebugView.
+- **Tag Manager**: botón «Vista previa», pegar la dirección de la web. Tiene que aparecer "Connected" y las etiquetas disparándose.
+- **Analytics 4**: «Informes > Tiempo real»: entrás a la web y aparecés. «Administrar > DebugView» muestra cada evento al detalle.
+- **Pixel de Meta**: extensión de Chrome "Meta Pixel Helper" y, en el Administrador de eventos, «Probar eventos» y «Diagnóstico».
+- **Compra desde el servidor**: con `META_TEST_EVENT_CODE` cargada, confirmar una reserva de prueba y mirar «Probar eventos» de Meta. En Analytics, el evento `purchase` aparece en «Tiempo real» y en DebugView.
 - En la base: `select codigo, tracking->'servidor' from reservas order by created_at desc limit 5;` dice si cada envío salió bien.
 
 ## 5. Pendientes del lado de Meta y Google
 
-- Verificar el dominio en Meta (Business Manager > Seguridad de la marca > Dominios). Con la etiqueta HTML: pegar el código en
-  `META_VERIFICACION_DOMINIO` de `ids.ts`. La verificación por DNS necesita acceso al DNS del dominio.
+- Verificar el dominio en Meta (Business Manager > Seguridad de la marca > Dominios). Con la etiqueta HTML: pegar el código en `META_VERIFICACION_DOMINIO` de `ids.ts`. La verificación por DNS necesita acceso al DNS del dominio.
 - Asignar el Pixel a la cuenta publicitaria `1224262638867048` (Business Manager > Orígenes de datos > Píxeles > Agregar activos).
 - En Analytics, marcar `purchase` y `generate_lead` como eventos clave (Administrar > Eventos).
-- Página de privacidad y cookies: Meta y Google la piden. Falta redactarla con Steph.
+- Páginas de privacidad y cookies (`/privacidad` y `/cookies`, enlazadas en el pie): publicadas el 2026-11-09. Falta que Steph las lea y confirme los datos (mail de contacto, proveedores) y que consulte con su contador o abogada si debe inscribir la base de datos en el Registro Nacional de Bases de Datos de la AAIP. Si se suma otra herramienta que usa cookies (por ejemplo Clarity), hay que agregarla a `/cookies` y actualizar la fecha en `src/components/sitio/Legal.tsx`.
 - Antes de apuntar el dominio a la web nueva, comprobar todo lo anterior: cuando cambia el dominio, el seguimiento de Tiendup se corta.

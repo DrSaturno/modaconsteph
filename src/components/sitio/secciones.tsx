@@ -58,7 +58,10 @@ export function Pie({ aj }: { aj: AjustesPublicos }) {
             <Link href="/#faq">Preguntas frecuentes</Link>
           </div>
         </div>
-        <p className="copy">© 2026 Moda con Steph. Todos los derechos reservados.</p>
+        <p className="copy">
+          <span>© 2026 Moda con Steph. Todos los derechos reservados.</span>
+          <span className="copy-links"><Link href="/privacidad">Política de privacidad</Link><Link href="/cookies">Política de cookies</Link></span>
+        </p>
       </div>
     </footer>
   );
