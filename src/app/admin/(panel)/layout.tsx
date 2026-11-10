@@ -24,6 +24,7 @@ async function Marco({ children }: { children: ReactNode }) {
     { href: '/admin/reservas', texto: 'Reservas', n: c.pendientes },
     { href: '/admin/consultas', texto: 'Consultas', n: c.nuevas },
     ...(a.rol === 'admin' ? [{ href: '/admin/mails', texto: 'Mails automáticos' }, { href: '/admin/ajustes', texto: 'Ajustes' }] : []),
+    { href: '/admin/cuenta', texto: 'Mi cuenta' },
   ];
   return (
     <div className="adm-app">

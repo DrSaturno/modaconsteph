@@ -3,6 +3,8 @@
 import { revalidatePath, updateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { cerrarSesion, ipActual, iniciarSesion, requerirAdmin } from '@/lib/auth';
+import { claveCorrecta, hashClave } from '@/lib/hash';
+import { permitir } from '@/lib/limites';
 import { query, tx } from '@/lib/db';
 import { entero, instanteAR, horaDeInicio, lineas, slugify, texto } from '@/lib/admin-form';
 import { normalizarCaratula } from '@/lib/caratula';
@@ -24,6 +26,20 @@ export async function entrar(_: { error: string; email: string }, f: FormData): 
 export async function salir() {
   await cerrarSesion();
   redirect('/admin/login');
+}
+
+/** Cada persona cambia su propia clave: pide la actual (por si alguien deja la sesión abierta) y la nueva dos veces. */
+export async function cambiarMiClave(_: Estado, f: FormData): Promise<Estado> {
+  const a = await requerirAdmin();
+  if (!(await permitir(`cambiar-clave:${a.id}`, 6, 900))) return { error: 'Demasiados intentos. Esperá unos minutos y probá de nuevo.' };
+  const actual = String(f.get('actual') ?? ''), nueva = String(f.get('nueva') ?? ''), repetir = String(f.get('repetir') ?? '');
+  const fila = (await query<{ password_hash: string }>(`select password_hash from admins where id = $1`, [a.id]))[0];
+  if (!fila || !claveCorrecta(actual, fila.password_hash)) return { error: 'La clave actual no es correcta.' };
+  if (nueva.length < 10) return { error: 'La clave nueva tiene que tener al menos 10 caracteres.' };
+  if (nueva === actual) return { error: 'La clave nueva tiene que ser distinta de la actual.' };
+  if (nueva !== repetir) return { error: 'Las dos claves nuevas no coinciden.' };
+  await query(`update admins set password_hash = $2 where id = $1`, [a.id, hashClave(nueva)]);
+  return { ok: 'Listo, cambiaste tu clave. La próxima vez que entres, usá la nueva.' };
 }
 
 /* ---------- Reservas ---------- */
