@@ -304,3 +304,24 @@ footer{background:var(--letra);color:var(--sobre-oscuro);padding-block:56px 40px
 .wa-burbuja:hover::before,.wa-burbuja:focus-visible::before{opacity:1}
 @media (prefers-reduced-motion:reduce){.wa-burbuja,.wa-burbuja::before{transition:none}.wa-burbuja:hover,.wa-burbuja:focus-visible{transform:none}}
 @media (max-width:640px){.wa-burbuja{right:max(16px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));width:54px;height:54px}.wa-burbuja::before{display:none}}
+
+/* Verde salvia en lugar del grafito en los bloques oscuros (pedido de la clienta, 2026-11-11).
+   Sobre salvia el texto va en grafito (~6:1) y los títulos en borgoña (~4,2:1): el rosa sobre salvia no se lee.
+   El pie queda en grafito porque lleva el logo claro, que no se puede modificar. */
+.pasos,.resenas,.ticket,.news{
+  --titulo:var(--borgona);
+  --brillo:color-mix(in srgb,var(--borgona) 22%,transparent);
+  --sobre-oscuro:color-mix(in srgb,var(--letra) 90%,var(--salvia));
+  --oscuro-2:color-mix(in srgb,var(--crema) 38%,var(--salvia));
+  --oscuro-linea:color-mix(in srgb,var(--letra) 28%,var(--salvia));
+  background:var(--salvia);color:var(--letra);
+}
+.pasos :focus-visible,.resenas :focus-visible,.news :focus-visible,.ticket :focus-visible{outline-color:var(--letra)}
+.rev blockquote,.news .nform input{color:var(--letra)}
+.pasos .btn,.news .btn,.ticket .btn{background:var(--letra);color:var(--crema)}
+.t-stub{border-right-color:color-mix(in srgb,var(--letra) 45%,var(--salvia))}
+/* etiquetas, filtro activo y botones oscuros de las tarjetas */
+.tag{background:var(--salvia);color:var(--letra)}
+.filters button[aria-pressed=true]{background:var(--salvia);border-color:var(--letra);color:var(--letra)}
+.btn.dark{background:var(--salvia);color:var(--letra);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--letra) 22%,var(--salvia))}
+.btn.dark:hover{background:var(--titulo);color:var(--letra)}
