@@ -22,6 +22,7 @@ export const TITULO = '#D07AA3'; // rosa principal
 export const ROSA_CLARO = '#F3DCE6';
 export const TAUPE = '#C9B7B6';
 export const MALVA = '#8C5A7D'; // malva profundo, acento
+export const SALVIA = '#A3AC99'; // verde salvia (2026-11-11): solo detalles, nunca texto
 
 const canal = (hex: string, i: number) => parseInt(hex.slice(1 + i * 2, 3 + i * 2), 16);
 /** Mezcla de dos colores de la paleta: t = 0 es `a`, t = 1 es `b`. */

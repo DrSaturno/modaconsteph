@@ -8,8 +8,10 @@
  *   Grafito         #2B2B2B  textos y contraste
  *   Taupe           #C9B7B6  recuadros, bordes, divisores, elementos neutros
  *   Malva profundo  #8C5A7D  acento opcional: botones secundarios, frases, campañas especiales
+ *   Salvia          #A3AC99  agregado por la clienta el 2026-11-11: solo detalles (viñetas, bordes, chips, sellos). Nunca texto.
  *   Secundaria:     Borgoña #6D2C4D · Lavanda #D7B9D4 · Beige #E6D9D2 · Gris suave #E8E8E8
  *
+ * El salvia sobre el crema tiene ~2,2:1 de contraste: sirve para decorar, no para leer. Los textos sobre salvia van en grafito (~6:1).
  * El rosa principal sobre el fondo crema tiene poco contraste para texto chico: ahí se usa el malva (o el grafito).
  * Los textos de botones sobre rosa van en grafito (con blanco no llega al contraste mínimo).
  * La misma paleta vive en src/lib/caratula.ts (carátulas e imagen para compartir) y en src/lib/mail/plantillas.ts (mails).
@@ -17,6 +19,7 @@
 :root{
   --rosa:#D07AA3; --rosa-claro:#F3DCE6; --crema:#FAF6F7; --grafito:#2B2B2B; --taupe:#C9B7B6; --malva:#8C5A7D;
   --borgona:#6D2C4D; --lavanda:#D7B9D4; --beige:#E6D9D2; --gris-suave:#E8E8E8;
+  --salvia:#A3AC99; --salvia-claro:color-mix(in srgb,var(--salvia) 24%,var(--crema));
 
   /* los nombres que usa el resto del código */
   --fondo:var(--crema); --letra:var(--grafito); --titulo:var(--rosa); --acento:var(--malva);
