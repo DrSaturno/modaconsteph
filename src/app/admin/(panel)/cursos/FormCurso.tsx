@@ -80,14 +80,14 @@ export function FormCurso({ curso }: { curso?: CursoEdit }) {
         </fieldset>
 
         <fieldset className="fs">
-          <h3>Carátula</h3><small>La imagen del curso: la ve la alumna en la tarjeta, en la página del curso y cuando alguien comparte el link. Probá y mirá cómo queda a la derecha.</small>
+          <h3>Carátula</h3><small>La imagen del curso: la ve la alumna en la tarjeta y en la página del curso (sin texto), y cuando alguien comparte el link (con el título y la línea de abajo). Probá y mirá cómo queda a la derecha.</small>
           <div className="row2">
             <div className="f"><label htmlFor="caratula_titulo">Título de la carátula</label>
               <input id="caratula_titulo" name="caratula_titulo" maxLength={40} defaultValue={cfg.titulo} placeholder={pv.nombre || 'Igual al nombre del curso'} />
-              <small>Es lo que se lee grande. Mejor corto. Si lo dejás vacío, usa el nombre del curso.</small></div>
+              <small>Solo se ve en la imagen que aparece al compartir el link. Mejor corto. Si lo dejás vacío, usa el nombre del curso.</small></div>
             <div className="f"><label htmlFor="caratula_detalle">Línea de abajo</label>
               <input id="caratula_detalle" name="caratula_detalle" maxLength={48} defaultValue={cfg.detalle} placeholder={detalleAuto} />
-              <small>Si la dejás vacía, se arma sola con el formato y los lugares.</small></div>
+              <small>También solo al compartir el link. Si la dejás vacía, se arma sola con el formato y los lugares.</small></div>
           </div>
           <div className="f" role="radiogroup" aria-labelledby="lbl-motivo">
             <span id="lbl-motivo" className="lbl">Ilustración</span>

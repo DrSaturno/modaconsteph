@@ -6,11 +6,11 @@
 
 export const MOTIVOS = [
   { id: 'abanico', nombre: 'Abanico de colores' },
-  { id: 'mezcla', nombre: 'Mezcla de pigmentos' },
+  { id: 'mezcla', nombre: 'Círculo cromático' },
   { id: 'espejo', nombre: 'Espejo de camerino' },
   { id: 'arco', nombre: 'Arcos' },
   { id: 'perchero', nombre: 'Perchero' },
-  { id: 'labial', nombre: 'Labial' },
+  { id: 'labial', nombre: 'Paleta, labial y pincel' },
   { id: 'regalo', nombre: 'Regalo' },
 ] as const;
 export type Motivo = (typeof MOTIVOS)[number]['id'];
@@ -60,6 +60,10 @@ export type PaletaDef = {
   reflejo: string;
   /** Trazo de los detalles (centro del abanico, perchas y barra del perchero). Si falta se usa `tinta`. */
   trazo?: string;
+  /** Color de la figura principal de la ilustración (el objeto grande). */
+  figura: string;
+  /** Color de los detalles del objeto (luces del espejo, perchas, cuerpo de la paleta). Tiene que contrastar con el fondo. */
+  detalle: string;
 };
 
 const ROSA_PROFUNDO = MALVA;
@@ -70,6 +74,11 @@ const luminosidad = (hex: string) => {
     return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
   });
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+
+const contraste = (a: string, b: string) => {
+  const [x, y] = [luminosidad(a), luminosidad(b)];
+  return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
 };
 
 /**
@@ -86,6 +95,8 @@ function personalizada(nombre: string, fondo: string, figura: string, detalle: s
     rampa: Array.from({ length: 7 }, (_, i) => mezcla(figura, fondo, ((6 - i) / 6) * 0.7)),
     centro: detalle, marco: figura, vidrio: mezcla(fondo, FONDO, 0.35), chispa: detalle, bombita: detalle, acento: detalle, reflejo: FONDO,
     trazo: figura,
+    figura,
+    detalle: contraste(detalle, fondo) >= 2.2 ? detalle : mezcla(figura, LETRA, 0.5),
   };
 }
 
@@ -94,26 +105,31 @@ export const PALETAS = {
     nombre: 'Noche', fondo: LETRA, fondo2: mezcla(LETRA, TITULO, 0.24), tinta: FONDO, tinta2: mezcla(LETRA, FONDO, 0.78), linea: conAlfa(FONDO, 0.24),
     rampa: [FONDO, clara(0.25), clara(0.5), clara(0.75), TITULO, oscura(0.3), oscura(0.52)],
     centro: FONDO, marco: FONDO, vidrio: clara(0.3), chispa: FONDO, bombita: TITULO, acento: FONDO, reflejo: FONDO,
+    figura: TITULO, detalle: FONDO,
   },
   berry: {
     nombre: 'Rosa', fondo: TITULO, fondo2: mezcla(TITULO, FONDO, 0.3), tinta: LETRA, tinta2: LETRA, linea: conAlfa(LETRA, 0.28),
     rampa: [FONDO, clara(0.16), clara(0.34), clara(0.52), oscura(0.5), oscura(0.72), LETRA],
     centro: LETRA, marco: FONDO, vidrio: clara(0.22), chispa: FONDO, bombita: TITULO, acento: LETRA, reflejo: FONDO,
+    figura: FONDO, detalle: LETRA,
   },
   rosa: {
     nombre: 'Claro', fondo: FONDO, fondo2: clara(0.22), tinta: LETRA, tinta2: mezcla(LETRA, FONDO, 0.25), linea: conAlfa(LETRA, 0.2),
     rampa: [clara(0.3), clara(0.5), clara(0.75), TITULO, oscura(0.35), oscura(0.6), LETRA],
     centro: LETRA, marco: LETRA, vidrio: clara(0.2), chispa: TITULO, bombita: FONDO, acento: LETRA, reflejo: FONDO,
+    figura: TITULO, detalle: MALVA,
   },
   luz: {
     nombre: 'Rosa suave', fondo: ROSA_CLARO, fondo2: mezcla(ROSA_CLARO, FONDO, 0.5), tinta: LETRA, tinta2: mezcla(LETRA, FONDO, 0.12), linea: conAlfa(LETRA, 0.22),
     rampa: [FONDO, clara(0.18), TITULO, oscura(0.25), oscura(0.45), oscura(0.65), LETRA],
     centro: LETRA, marco: LETRA, vidrio: clara(0.1), chispa: FONDO, bombita: FONDO, acento: FONDO, reflejo: FONDO,
+    figura: TITULO, detalle: BORGONA,
   },
   durazno: {
     nombre: 'Rosa profundo', fondo: ROSA_PROFUNDO, fondo2: mezcla(ROSA_PROFUNDO, TITULO, 0.45), tinta: FONDO, tinta2: FONDO, linea: conAlfa(FONDO, 0.3),
     rampa: [FONDO, clara(0.25), clara(0.5), clara(0.75), TITULO, oscura(0.7), LETRA],
     centro: FONDO, marco: FONDO, vidrio: clara(0.3), chispa: FONDO, bombita: TITULO, acento: FONDO, reflejo: FONDO,
+    figura: ROSA_CLARO, detalle: FONDO,
   },
   /* Las cinco de abajo son los colores que eligió Steph para cada dibujo (fondo, figura grande, detalles). */
   taller: personalizada('Rosa con crema', ROSA_CLARO, TITULO, FONDO),
