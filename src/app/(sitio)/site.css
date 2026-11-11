@@ -328,3 +328,14 @@ footer{background:var(--letra);color:var(--sobre-oscuro);padding-block:56px 40px
 .filters button[aria-pressed=true]{background:var(--salvia);border-color:var(--letra);color:var(--letra)}
 .btn.dark{background:var(--salvia);color:var(--letra);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--letra) 22%,var(--salvia))}
 .btn.dark:hover{background:var(--titulo);color:var(--letra)}
+
+/* El cupón de regalo es dorado, como un boleto ganador (pedido de Nicolás, 2026-11-11). Es la única pieza fuera de la paleta de la marca.
+   Sobre el dorado el grafito da ~8:1. */
+.ticket{
+  background:
+    linear-gradient(115deg,transparent 0 38%,color-mix(in srgb,#fff 48%,transparent) 47%,transparent 56% 100%),
+    linear-gradient(135deg,var(--dorado-claro) 0%,var(--dorado) 38%,var(--dorado-claro) 62%,var(--dorado-oscuro) 100%);
+  color:var(--letra);
+}
+.ticket .t-stub{border-right-color:color-mix(in srgb,var(--letra) 55%,var(--dorado))}
+.ticket .btn{background:var(--letra);color:var(--dorado-claro)}
