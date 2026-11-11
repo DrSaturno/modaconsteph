@@ -10,6 +10,7 @@ export default async function SitioLayout({ children }: LayoutProps<'/'>) {
   const [catalogo, aj] = await Promise.all([getCatalogo(), getAjustesPublicos()]);
   return (
     <BookingProvider catalogo={catalogo} ajustes={aj}>
+      <i className="sitio-root" hidden />
       <Cabecera />
       {children}
       <Pie aj={aj} />

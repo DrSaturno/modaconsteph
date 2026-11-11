@@ -99,13 +99,12 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .sr-p{text-align:right;line-height:1.2}
 .sr-p s{display:block;font-size:13px;color:var(--suave)}
 .sr-p b{font-family:var(--f-head);font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
-.sheet-wait{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center;justify-content:space-between;padding:22px 26px;border:2px dashed var(--salvia);border-radius:22px;background:transparent}
+.sheet-wait{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center;justify-content:space-between;padding:22px 26px;border:2px dashed var(--linea-fuerte);border-radius:22px;background:transparent}
 .sheet-wait p{max-width:26em;color:var(--suave)}
 .sheet-wait b{color:var(--letra)}
 .nform{display:flex;gap:10px;flex-wrap:wrap}
 .nform input{min-height:50px;min-width:240px;padding:0 18px;border-radius:999px;border:1.5px solid var(--linea-fuerte);background:var(--fondo);font:inherit;font-size:16px;color:var(--letra)}
 .news-ok{font-weight:600;color:var(--letra)}
-.news-ok::before{content:"";display:inline-block;width:10px;height:10px;margin-right:8px;border-radius:50%;background:var(--salvia)}
 
 .cursos{background:var(--tinte-0)}
 .filters{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
@@ -123,7 +122,6 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .card details{font-size:14px}
 .card summary{cursor:pointer;color:var(--letra);font-weight:600;min-height:32px;display:flex;align-items:center}
 .card ul{margin:6px 0 0;padding-left:18px;color:var(--suave);display:grid;gap:4px}
-.card li::marker,.regalo li::marker{color:var(--salvia)}
 .card-f{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:6px}
 .card-pr{line-height:1.15}
 .card-pr s{display:block;font-size:12.5px;color:var(--suave)}
@@ -144,7 +142,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .about p{margin-top:18px;color:var(--suave);max-width:36em}
 blockquote{margin:26px 0 0;padding:0;font-family:var(--f-head);font-size:24px;line-height:1.3;font-weight:600;color:var(--titulo);text-wrap:balance}
 .chips{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 0;padding:0;list-style:none}
-.chips li{padding:8px 16px;border-radius:999px;background:var(--salvia-claro);font-size:13.5px;box-shadow:inset 0 0 0 1px var(--salvia)}
+.chips li{padding:8px 16px;border-radius:999px;background:var(--fondo);font-size:13.5px;box-shadow:inset 0 0 0 1px var(--linea-fuerte)}
 
 .resenas{background:var(--letra);color:var(--fondo)}
 .resenas .eyebrow{color:var(--sobre-oscuro)}
@@ -157,7 +155,7 @@ blockquote{margin:26px 0 0;padding:0;font-family:var(--f-head);font-size:24px;li
 
 .regalo-in{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:56px;align-items:center}
 .ticket{position:relative;display:grid;grid-template-columns:96px minmax(0,1fr);background:var(--letra);color:var(--fondo);border-radius:22px;filter:drop-shadow(0 24px 40px var(--sombra));-webkit-mask:radial-gradient(circle 13px at 96px 0,#0000 98%,#000) top/100% 51% no-repeat,radial-gradient(circle 13px at 96px 100%,#0000 98%,#000) bottom/100% 51% no-repeat;mask:radial-gradient(circle 13px at 96px 0,#0000 98%,#000) top/100% 51% no-repeat,radial-gradient(circle 13px at 96px 100%,#0000 98%,#000) bottom/100% 51% no-repeat}
-.t-stub{display:grid;place-items:center;border-right:2px dashed var(--salvia);writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:var(--titulo);font-weight:600;padding:20px 0}
+.t-stub{display:grid;place-items:center;border-right:2px dashed var(--sobre-oscuro);writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:var(--titulo);font-weight:600;padding:20px 0}
 .t-main{padding:36px 34px;display:grid;gap:10px}
 .t-main .eyebrow{color:var(--sobre-oscuro)}
 .t-main h3{font-size:30px;line-height:1.15;font-weight:600}
@@ -305,37 +303,73 @@ footer{background:var(--letra);color:var(--sobre-oscuro);padding-block:56px 40px
 @media (prefers-reduced-motion:reduce){.wa-burbuja,.wa-burbuja::before{transition:none}.wa-burbuja:hover,.wa-burbuja:focus-visible{transform:none}}
 @media (max-width:640px){.wa-burbuja{right:max(16px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));width:54px;height:54px}.wa-burbuja::before{display:none}}
 
-/* Bloques que eran de grafito, ahora en rosa principal (pedido de la clienta, 2026-11-11).
-   Sobre el rosa #D07AA3 el grafito da ~4,7:1 y el blanco solo ~3:1, así que todo el texto va en grafito.
-   El pie lleva el logo claro (sin modificar), que sobre el rosa se ve en crema. */
-.pasos,.resenas,.ticket,.news,footer{
-  --titulo:var(--letra);
-  --brillo:color-mix(in srgb,var(--crema) 70%,transparent);
-  --sobre-oscuro:var(--letra);
-  --oscuro-2:color-mix(in srgb,var(--crema) 45%,var(--rosa));
-  --oscuro-linea:color-mix(in srgb,var(--letra) 28%,var(--rosa));
-  background:var(--rosa);color:var(--letra);
+/* =====================================================================================================
+   COLORES DE LA WEB elegidos por la clienta con la herramienta "Pintá la web" (2026-11-11).
+   Los valores viven en src/app/paleta.css (--web-*). Solo afecta a la web pública: la marca .sitio-root
+   está en el layout de (sitio), así que el panel de Steph no cambia.
+   ===================================================================================================== */
+body:has(.sitio-root){
+  --suave:var(--letra);                         /* texto de apoyo: grafito */
+  --linea:var(--web-linea); --linea-fuerte:var(--web-linea);
+  --brillo:color-mix(in srgb,var(--web-luces) 60%,transparent);
+  background:var(--web-pagina);
 }
-.pasos :focus-visible,.resenas :focus-visible,.news :focus-visible,.ticket :focus-visible,footer :focus-visible{outline-color:var(--letra)}
-.rev blockquote,.news .nform input{color:var(--letra)}
-.news .nform input::placeholder{color:color-mix(in srgb,var(--letra) 70%,var(--oscuro-2))}
-.pasos .btn,.news .btn,.ticket .btn{background:var(--letra);color:var(--crema)}
-.steps li::before{background:var(--crema)}
-.t-stub{border-right-color:color-mix(in srgb,var(--letra) 45%,var(--rosa))}
-.foot-in a:hover,.copy-links a:hover{color:var(--letra);text-decoration:underline}
-/* etiquetas, filtro activo y botones oscuros de las tarjetas */
-.tag{background:var(--salvia);color:var(--letra)}
-.filters button[aria-pressed=true]{background:var(--salvia);border-color:var(--letra);color:var(--letra)}
-.btn.dark{background:var(--salvia);color:var(--letra);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--letra) 22%,var(--salvia))}
-.btn.dark:hover{background:var(--titulo);color:var(--letra)}
+body:has(.sitio-root)::before{background:var(--web-pagina)}
+.top{background:var(--web-pagina)}
+.hero{background:var(--web-pagina)}
+.cursos,.faq{background:var(--web-seccion)}
 
-/* El cupón de regalo es dorado, como un boleto ganador (pedido de Nicolás, 2026-11-11). Es la única pieza fuera de la paleta de la marca.
-   Sobre el dorado el grafito da ~8:1. */
-.ticket{
-  background:
-    linear-gradient(115deg,transparent 0 38%,color-mix(in srgb,#fff 48%,transparent) 47%,transparent 56% 100%),
-    linear-gradient(135deg,var(--dorado-claro) 0%,var(--dorado) 38%,var(--dorado-claro) 62%,var(--dorado-oscuro) 100%);
-  color:var(--letra);
-}
-.ticket .t-stub{border-right-color:color-mix(in srgb,var(--letra) 55%,var(--dorado))}
-.ticket .btn{background:var(--letra);color:var(--dorado-claro)}
+/* títulos */
+.hero h1,.hero.mini h1{color:var(--web-t1)}
+.hero h1 em{color:var(--web-t1b)}
+.sec h2,.ficha h2,.estado h1{color:var(--web-t2)}
+.card h3,.lado-card h3,.sr-t,.g-title{color:var(--web-t3)}
+.g-m b{color:var(--web-t2)}
+.g-num,.sd b,blockquote,.acc summary::after{color:var(--web-dest)}
+.eyebrow::before{background:currentColor}
+
+/* tarjetas, filas y cuadros: blancos */
+.card,.sheet-row,.acc details,.lado-card,.estado .caja,.menu div,.nform input{background:var(--web-tarjeta)}
+
+/* espejo de la portada */
+.mirror{background:var(--web-espejo)}
+.glass{background:var(--web-espejo-in)}
+.glass::before{display:none}
+.bulb,.seat.on{background:radial-gradient(circle at 35% 30%,var(--fondo),var(--web-luces) 62%)}
+.seat.on{box-shadow:0 0 0 2px var(--web-luces),0 0 12px 3px var(--brillo)}
+.card li::marker,.regalo li::marker{color:var(--web-luces)}
+
+/* botones y etiquetas */
+.btn{background:var(--web-btn);color:var(--web-btn-letra)}
+.btn:hover{background:var(--letra);color:var(--fondo)}
+.btn.dark{background:var(--web-btn2);color:var(--web-btn2-letra)}
+.btn.dark:hover{background:var(--letra);color:var(--fondo)}
+.btn.ghost{background:transparent;color:var(--web-btn3);box-shadow:inset 0 0 0 1.5px var(--web-btn3)}
+.btn.ghost:hover{background:var(--web-btn3);color:var(--fondo)}
+.tag{background:var(--web-tag);color:var(--web-tag-letra)}
+.chips li{background:var(--web-chip);color:var(--web-chip-letra);box-shadow:none}
+.filters button[aria-pressed=true]{background:var(--web-filtro);border-color:var(--web-filtro);color:var(--web-filtro-letra)}
+
+/* bloques que eran de grafito: ahora casi blancos, con texto grafito y títulos borgoña */
+.pasos,.resenas,.news,footer{background:var(--web-bloque);color:var(--web-sobre-bloque)}
+.pasos .eyebrow,.resenas .eyebrow{color:var(--web-sobre-bloque)}
+.pasos h2,.resenas h2,.news h3,.steps b,.foot-in h4,.rev-more a,.news .news-ok{color:var(--web-bloque-titulo)}
+.steps li{border-top-color:color-mix(in srgb,var(--web-sobre-bloque) 30%,transparent)}
+.steps li::before{background:radial-gradient(circle at 35% 30%,#fff,var(--web-luces) 62%);box-shadow:0 0 14px 3px var(--brillo)}
+.steps span,.news p{color:var(--web-sobre-bloque)}
+.rev figure{background:var(--web-bloque-tarjeta);box-shadow:none}
+.rev blockquote,.rev figcaption{color:var(--web-sobre-bloque)}
+.news .nform input{background:var(--web-bloque-tarjeta);border-color:transparent;color:var(--web-sobre-bloque)}
+.news .nform input::placeholder{color:color-mix(in srgb,var(--web-sobre-bloque) 65%,var(--web-bloque-tarjeta))}
+.foot-in a:hover,.copy-links a:hover{color:var(--web-bloque-titulo);text-decoration:underline}
+.copy{border-top-color:color-mix(in srgb,var(--web-sobre-bloque) 25%,transparent)}
+.pasos :focus-visible,.resenas :focus-visible,.news :focus-visible,footer :focus-visible{outline-color:var(--letra)}
+.pasos .btn:hover,.news .btn:hover{background:var(--letra);color:var(--fondo)}
+
+/* boleto de la gift card: crema con letra borgoña (con un filo para que no se pierda sobre el fondo) */
+.ticket{background:var(--web-boleto);color:var(--web-boleto-letra);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--web-boleto-letra) 22%,transparent)}
+.t-stub{border-right-color:color-mix(in srgb,var(--web-boleto-letra) 55%,transparent);color:var(--web-boleto-letra)}
+.t-main .eyebrow,.regalo .t-main p:not(.eyebrow),.t-price,.t-price s{color:inherit}
+.t-price s{opacity:.7}
+.ticket :focus-visible{outline-color:var(--letra)}
+.t-main h3{color:inherit}

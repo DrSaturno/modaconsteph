@@ -59,7 +59,7 @@ function Abanico({ P }: P) {
           <circle cx={px} cy={py - L + 21} r={5.5} fill={P.fondo} opacity={0.5} />
         </g>
       ))}
-      <circle cx={px} cy={py} r={14} fill={P.tinta} />
+      <circle cx={px} cy={py} r={14} fill={P.trazo ?? P.tinta} />
       <circle cx={px} cy={py} r={5} fill={P.fondo} />
       <Chispa x={236} y={52} s={11} c={P.chispa} />
       <Chispa x={372} y={30} s={7} c={P.chispa} />
@@ -140,11 +140,11 @@ function Perchero({ P }: P) {
   ];
   return (
     <g>
-      <rect x={196} y={y0 - 2} width={216} height={5} rx={2.5} fill={P.tinta} />
+      <rect x={196} y={y0 - 2} width={216} height={5} rx={2.5} fill={P.trazo ?? P.tinta} />
       {prendas.map(({ x, largo, ancho, c }) => (
         <g key={x}>
-          <path d={`M${x} ${y0 + 3}V${y0 + 16}`} stroke={P.tinta} strokeWidth={3} strokeLinecap="round" fill="none" />
-          <path d={`M${x - ancho} ${y0 + 42}L${x} ${y0 + 18}L${x + ancho} ${y0 + 42}Z`} stroke={P.tinta} strokeWidth={3} strokeLinejoin="round" fill="none" />
+          <path d={`M${x} ${y0 + 3}V${y0 + 16}`} stroke={P.trazo ?? P.tinta} strokeWidth={3} strokeLinecap="round" fill="none" />
+          <path d={`M${x - ancho} ${y0 + 42}L${x} ${y0 + 18}L${x + ancho} ${y0 + 42}Z`} stroke={P.trazo ?? P.tinta} strokeWidth={3} strokeLinejoin="round" fill="none" />
           <path
             d={`M${x - ancho + 2} ${y0 + 42}L${x - ancho - 8} ${y0 + largo}Q${x} ${y0 + largo + 12} ${x + ancho + 8} ${y0 + largo}L${x + ancho - 2} ${y0 + 42}Z`}
             fill={P.rampa[c]}

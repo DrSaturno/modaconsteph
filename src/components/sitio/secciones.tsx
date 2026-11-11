@@ -44,7 +44,7 @@ export function Pie({ aj }: { aj: AjustesPublicos }) {
       <div className="wrap">
         <div className="foot-in">
           <div>
-            <Image src="/img/logo-claro.png" alt="Moda con Steph" width={101} height={72} style={{ height: 72, width: 'auto' }} />
+            <Image src="/img/logo-rosa.png" alt="Moda con Steph" width={101} height={72} style={{ height: 72, width: 'auto' }} />
             <p>Estudio de maquillaje e imagen personal.<br />Belgrano, CABA, a pasos de Av. Cabildo, con subte y colectivos.</p>
           </div>
           <div>

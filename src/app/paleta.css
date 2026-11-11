@@ -8,7 +8,7 @@
  *   Grafito         #2B2B2B  textos y contraste
  *   Taupe           #C9B7B6  recuadros, bordes, divisores, elementos neutros
  *   Malva profundo  #8C5A7D  acento opcional: botones secundarios, frases, campañas especiales
- *   Salvia          #A3AC99  agregado por la clienta el 2026-11-11: solo detalles (viñetas, bordes, chips, sellos). Nunca texto.
+ *   Salvia          #A3AC99  agregado por la clienta el 2026-11-11. Hoy no se usa en la web (ella lo reemplazó al pintar); queda en la paleta.
  *   Secundaria:     Borgoña #6D2C4D · Lavanda #D7B9D4 · Beige #E6D9D2 · Gris suave #E8E8E8
  *
  * El salvia sobre el crema tiene ~2,2:1 de contraste: sirve para decorar, no para leer. Los textos sobre salvia van en grafito (~6:1).
@@ -19,8 +19,18 @@
 :root{
   --rosa:#D07AA3; --rosa-claro:#F3DCE6; --crema:#FAF6F7; --grafito:#2B2B2B; --taupe:#C9B7B6; --malva:#8C5A7D;
   --borgona:#6D2C4D; --lavanda:#D7B9D4; --beige:#E6D9D2; --gris-suave:#E8E8E8;
-  --dorado:#D6B057; --dorado-claro:#F0DA95; --dorado-oscuro:#C9A04A; /* excepción: solo el cupón de regalo, como boleto ganador */
   --salvia:#A3AC99; --salvia-claro:color-mix(in srgb,var(--salvia) 24%,var(--crema));
+
+  /* ---- colores de la web elegidos por la clienta con la herramienta "Pintá la web" (2026-11-11) ----
+     Cada uno es una "parte" que ella pintó. Los que dejó sin tocar quedaron en grafito, crema o blanco. */
+  --web-pagina:#FAF6F7; --web-seccion:#FAF6F7; --web-tarjeta:#FFFFFF;
+  --web-bloque:#F7F6F4; --web-bloque-tarjeta:#F3DCE6; --web-espejo:#FAF6F7; --web-espejo-in:#FFFFFF;
+  --web-boleto:#FAF6F7; --web-boleto-letra:#6D2C4D;
+  --web-t1:#D07AA3; --web-t1b:#6D2C4D; --web-t2:#6D2C4D; --web-t3:#2B2B2B; --web-dest:#6D2C4D;
+  --web-bloque-titulo:#6D2C4D; --web-sobre-bloque:#2B2B2B;
+  --web-btn:#D07AA3; --web-btn-letra:#FAF6F7; --web-btn2:#D07AA3; --web-btn2-letra:#FFFFFF; --web-btn3:#D07AA3;
+  --web-tag:#6D2C4D; --web-tag-letra:#FFFFFF; --web-chip:#E8E8E8; --web-chip-letra:#2B2B2B;
+  --web-filtro:#D07AA3; --web-filtro-letra:#FAF6F7; --web-luces:#D7B9D4; --web-linea:#D6B7C6;
 
   /* los nombres que usa el resto del código */
   --fondo:var(--crema); --letra:var(--grafito); --titulo:var(--rosa); --acento:var(--malva);

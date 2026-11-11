@@ -22,6 +22,7 @@ export const TITULO = '#D07AA3'; // rosa principal
 export const ROSA_CLARO = '#F3DCE6';
 export const TAUPE = '#C9B7B6';
 export const MALVA = '#8C5A7D'; // malva profundo, acento
+export const BORGONA = '#6D2C4D'; // borgoña (paleta secundaria)
 export const SALVIA = '#A3AC99'; // verde salvia (2026-11-11): solo detalles, nunca texto
 
 const canal = (hex: string, i: number) => parseInt(hex.slice(1 + i * 2, 3 + i * 2), 16);
@@ -57,9 +58,36 @@ export type PaletaDef = {
   acento: string;
   /** Reflejos del vidrio. */
   reflejo: string;
+  /** Trazo de los detalles (centro del abanico, perchas y barra del perchero). Si falta se usa `tinta`. */
+  trazo?: string;
 };
 
 const ROSA_PROFUNDO = MALVA;
+
+const luminosidad = (hex: string) => {
+  const [r, g, b] = [0, 1, 2].map((i) => {
+    const v = canal(hex, i) / 255;
+    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+
+/**
+ * Paleta armada a partir de tres colores que elige la clienta (herramienta "Pintá la web", 2026-11-11):
+ * el fondo, la figura grande (la rampa va de la figura hacia el fondo) y los detalles (chispas, bombitas, centros).
+ * El texto de la carátula se elige solo, claro u oscuro, según lo que se lea mejor sobre el fondo.
+ */
+function personalizada(nombre: string, fondo: string, figura: string, detalle: string): PaletaDef {
+  const claro = luminosidad(fondo) > 0.35;
+  const tinta = claro ? LETRA : FONDO;
+  return {
+    nombre, fondo, fondo2: mezcla(fondo, FONDO, 0.5), tinta, tinta2: claro ? mezcla(LETRA, FONDO, 0.12) : FONDO,
+    linea: conAlfa(tinta, 0.22),
+    rampa: Array.from({ length: 7 }, (_, i) => mezcla(figura, fondo, ((6 - i) / 6) * 0.7)),
+    centro: detalle, marco: figura, vidrio: mezcla(fondo, FONDO, 0.35), chispa: detalle, bombita: detalle, acento: detalle, reflejo: FONDO,
+    trazo: figura,
+  };
+}
 
 export const PALETAS = {
   ciruela: {
@@ -87,6 +115,12 @@ export const PALETAS = {
     rampa: [FONDO, clara(0.25), clara(0.5), clara(0.75), TITULO, oscura(0.7), LETRA],
     centro: FONDO, marco: FONDO, vidrio: clara(0.3), chispa: FONDO, bombita: TITULO, acento: FONDO, reflejo: FONDO,
   },
+  /* Las cinco de abajo son los colores que eligió Steph para cada dibujo (fondo, figura grande, detalles). */
+  taller: personalizada('Rosa con crema', ROSA_CLARO, TITULO, FONDO),
+  espejo: personalizada('Espejo crema', ROSA_CLARO, FONDO, BORGONA),
+  arcos: personalizada('Arcos rosa y borgoña', ROSA_CLARO, TITULO, BORGONA),
+  perchero: personalizada('Malva con crema', ROSA_CLARO, MALVA, FONDO),
+  abanico: personalizada('Crema con rosa', ROSA_CLARO, FONDO, TITULO),
 } as const satisfies Record<string, PaletaDef>;
 export type Paleta = keyof typeof PALETAS;
 export const PALETAS_ORDEN = Object.keys(PALETAS) as Paleta[];
