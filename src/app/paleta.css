@@ -25,7 +25,7 @@
      Cada uno es una "parte" que ella pintó. Los que dejó sin tocar quedaron en grafito, crema o blanco. */
   --web-pagina:#FAF6F7; --web-seccion:#FAF6F7; --web-tarjeta:#FFFFFF;
   --web-bloque:#F7F6F4; --web-bloque-tarjeta:#F3DCE6; --web-espejo:#FAF6F7; --web-espejo-in:#FFFFFF;
-  --web-boleto:#FAF6F7; --web-boleto-letra:#6D2C4D;
+  --web-boleto:#F3DCE6; --web-boleto-letra:#6D2C4D; /* rosa claro: Steph no lo pintó y en crema se perdía sobre el fondo */
   --web-t1:#D07AA3; --web-t1b:#6D2C4D; --web-t2:#6D2C4D; --web-t3:#2B2B2B; --web-dest:#6D2C4D;
   --web-bloque-titulo:#6D2C4D; --web-sobre-bloque:#2B2B2B;
   --web-btn:#D07AA3; --web-btn-letra:#FAF6F7; --web-btn2:#D07AA3; --web-btn2-letra:#FFFFFF; --web-btn3:#D07AA3;
